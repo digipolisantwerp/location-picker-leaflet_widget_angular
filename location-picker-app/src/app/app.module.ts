@@ -3,11 +3,13 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
+import { AuiLocationPickerComponent } from './components/aui-location-picker/aui-location-picker.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AuiLocationPickerComponent
   ],
   imports: [
     BrowserModule
