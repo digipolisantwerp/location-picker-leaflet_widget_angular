@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { baseMapAntwerp, LeafletLayer, LeafletMap } from '@acpaas-ui/leaflet';
+import { baseMapAntwerp, baseMapWorldGray, LeafletLayer, LeafletMap } from '@acpaas-ui/leaflet';
 import { LocationPickerValue } from '@acpaas-ui-widgets/ngx-location-picker';
 
 @Component({
@@ -10,7 +10,7 @@ import { LocationPickerValue } from '@acpaas-ui-widgets/ngx-location-picker';
 export class AppComponent {
   title = 'app';
 
-    layer:LeafletLayer =baseMapAntwerp;
+    layer:LeafletLayer =baseMapWorldGray;
     picker: LocationPickerValue;
     url:string='http://localhost:9999/api/locations';
     leafletMap: LeafletMap = new LeafletMap({
@@ -20,4 +20,9 @@ export class AppComponent {
         onAddLine: (layer) => {},
         onEditFeature: (feature) => {},
     });
+
+    addressResolvedCallback= (location) =>{
+        console.log(location);
+    }
+
 }

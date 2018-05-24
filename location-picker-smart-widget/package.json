@@ -32,7 +32,6 @@
     "zone.js": "^0.8.19"
   },
   "dependencies": {
-    "@angular/router": "^5.2.0",
     "@acpaas-ui-widgets/ngx-location-picker": "^1.0.0",
     "@acpaas-ui/flyout": "^4.0.2",
     "@acpaas-ui/leaflet": "^0.1.1",
@@ -47,6 +46,7 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/platform-server": "^5.2.11",
+    "@angular/router": "^5.2.0",
     "core-js": "^2.4.1",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"

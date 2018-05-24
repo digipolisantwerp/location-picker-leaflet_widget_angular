@@ -3,4 +3,15 @@
         [(value)]="locationPicker"
         (valueChange)="locationPickerValueChanged(locationPicker)">
 </aui-location-picker>
-<aui-leaflet [leafletMap]="leafletMap"></aui-leaflet>
+
+<aui-leaflet [leafletMap]="leafletMap">
+
+    <div controls bottom left>
+        <aui-leaflet-zoom-control></aui-leaflet-zoom-control>
+    </div>
+
+    <div controls bottom right>
+        <aui-leaflet-locate-control></aui-leaflet-locate-control>
+    </div>
+
+</aui-leaflet>
