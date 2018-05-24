@@ -1,30 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { LocationPickerValue } from '@acpaas-ui-widgets/ngx-location-picker';
-import { baseMapAntwerp, LeafletMap } from '@acpaas-ui/leaflet';
+import { LeafletLayer, LeafletMap } from '@acpaas-ui/leaflet';
 
 @Component({
-  selector: 'app-location-picker-leaflet',
-  templateUrl: './location-picker-leaflet.component.html',
-  styleUrls: ['./location-picker-leaflet.component.css']
+    selector: 'app-location-picker-leaflet',
+    templateUrl: './location-picker-leaflet.component.html',
+    styleUrls: ['./location-picker-leaflet.component.css']
 })
 export class LocationPickerLeafletComponent implements OnInit {
 
+    @Input() locationPicker: LocationPickerValue;
+    @Input() url: string;
+    @Input() leafletMap: LeafletMap;
+    @Input() layer: LeafletLayer;
 
-    location: LocationPickerValue;
-     leafletMap: LeafletMap = new LeafletMap({
-        zoom: 13, // default zoom level
-        center: [51.215, 4.425], // default center point
-        onAddPolygon: (layer) => {},
-        onAddLine: (layer) => {},
-        onEditFeature: (feature) => {},
-    });
-  constructor() { }
+    constructor() {
+    }
 
-  ngOnInit() {
-      this.leafletMap.onInit.subscribe(() => {
-          // this.leafletMap.addTileLayer(baseMapWorldGray);
-          this.leafletMap.addTileLayer(baseMapAntwerp);
-      });
-  }
+    ngOnInit() {
+
+        this.leafletMap.onInit.subscribe(() => {
+
+            console.log(this.url);
+            console.log(this.locationPicker);
+
+            console.log(this.leafletMap);
+            console.log(this.layer);
+            // this.leafletMap.addTileLayer(baseMapWorldGray);
+            this.leafletMap.addTileLayer(this.layer);
+        });
+    }
+
+    private locationPickerValueChanged = (location: LocationPickerValue) => {
+        console.log(location);
+    };
 
 }

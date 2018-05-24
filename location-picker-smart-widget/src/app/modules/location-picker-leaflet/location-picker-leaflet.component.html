@@ -1,5 +1,6 @@
 <aui-location-picker
-        url="http://localhost:9999/api/locations"
-        [(value)]="location">
+        url={{url}}
+        [(value)]="locationPicker"
+        (valueChange)="locationPickerValueChanged(locationPicker)">
 </aui-location-picker>
 <aui-leaflet [leafletMap]="leafletMap"></aui-leaflet>
