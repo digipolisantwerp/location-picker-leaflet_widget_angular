@@ -1,7 +1,9 @@
+
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LocationPickerValue } from '@acpaas-ui-widgets/ngx-location-picker';
 import { LeafletLayer, LeafletMap } from '@acpaas-ui/leaflet';
 import * as L from 'leaflet';
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),

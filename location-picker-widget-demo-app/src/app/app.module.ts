@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
+import { LocationPickerLeafletModule } from 'location-picker-smart-widget';
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import { AppComponent } from './app.component';
     AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+      LocationPickerLeafletModule
   ],
   providers: [],
   bootstrap: [AppComponent]
