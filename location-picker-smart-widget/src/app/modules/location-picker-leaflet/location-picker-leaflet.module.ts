@@ -16,7 +16,7 @@ import { LocationPickerLeafletService } from './location-picker-leaflet.service'
     ],
     declarations: [LocationPickerLeafletComponent],
     providers: [LocationPickerLeafletService],
-    exports: [LocationPickerLeafletComponent,LocationPickerLeafletService]
+    exports: [LocationPickerLeafletComponent]
 })
 export class LocationPickerLeafletModule {
 }
