@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LocationPickerValue } from '@acpaas-ui-widgets/ngx-location-picker';
 import { LeafletLayer, LeafletMap } from '@acpaas-ui/leaflet';
 import * as L from 'leaflet';
+import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({

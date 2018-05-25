@@ -3,16 +3,20 @@ import { CommonModule } from '@angular/common';
 import { LocationPickerLeafletComponent } from './location-picker-leaflet.component';
 import { LeafletModule } from '@acpaas-ui/leaflet';
 import { LocationPickerModule } from '@acpaas-ui-widgets/ngx-location-picker';
+import { HttpClientModule } from '@angular/common/http';
+import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 
 @NgModule({
     imports: [
         CommonModule,
         LeafletModule,
-        LocationPickerModule
+        LocationPickerModule,
+        HttpClientModule
 
     ],
     declarations: [LocationPickerLeafletComponent],
-    exports: [LocationPickerLeafletComponent]
+    providers: [LocationPickerLeafletService],
+    exports: [LocationPickerLeafletComponent,LocationPickerLeafletService]
 })
 export class LocationPickerLeafletModule {
 }
