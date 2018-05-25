@@ -42,8 +42,6 @@ export class LocationPickerLeafletComponent implements OnInit {
         if(!this.leafletMap) throw new Error("Attribute 'leafletMap' is required on aui-location-leaflet-smart-widget element.");
         if(!this.layer) throw new Error("Attribute 'layer' is required on aui-location-leaflet-smart-widget element.");
 
-        // Set the server url in the service
-        this.locationPickerLeafletService.setUrl(this.locationPickerUrl);
 
         // Layer can only be drawn on the leaflet after it has been initted.
         this.leafletMap.onInit.subscribe(() => {
@@ -70,18 +68,24 @@ export class LocationPickerLeafletComponent implements OnInit {
             // Using this event to prevent continuous calls
             this.leafletMap.map.on('dragend', () => {
 
-                //Calling the server to get location from coordinates
-                this.locationPickerLeafletService.getLocationFromCoordinates(this.leafletMap.map.getCenter());
                 console.log(this.leafletMap.map.getCenter());
+
+                // Calling the server to get location from coordinates.
+                this.locationPickerLeafletService.getLocationFromCoordinates(this.locationPickerUrl,this.leafletMap.map.getCenter()).then(response =>{
+                    console.log(response)
+                }).catch(err =>{
+                    console.log(err);
+                });
+
 
             });
 
         });
 
-        // this.leafletMap.map
     }
 
     private locationPickerValueChanged = (location: LocationPickerValue) => {
+        // Location picker valua has changed, which means there is a result from the server
         if (!location.coordinates.latLng) return;
         this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng], 25);
         this.addressResolvedCallback.emit(location)
