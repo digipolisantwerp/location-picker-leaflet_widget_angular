@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd ./location-picker-smart-widget/
-npm run packagr
+yarn run packagr
 cd  ../location-picker-widget-demo-app/
-npm install ../location-picker-smart-widget/dist.tgz
-ng serve --port 4301
+yarn add file:./../location-picker-smart-widget/dist.tgz
+ng serve --port 4301 --open

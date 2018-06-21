@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { baseMapWorldGray, LeafletLayer, LeafletMap } from '@acpaas-ui/leaflet';
 
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+
 
     layer: LeafletLayer = baseMapWorldGray;
     url: string = 'http://localhost:9999/api/locations';
@@ -20,6 +23,9 @@ export class AppComponent {
         onEditFeature: (feature) => {
         }
     });
+
+    constructor() {
+    }
 
     addressResolvedCallback = (location) => {
         console.log(location);
