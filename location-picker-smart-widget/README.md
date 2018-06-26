@@ -1,27 +1,52 @@
-# LocationPickerSmartWidget
+# Location picker leaflet.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
+## Installing the component
 
-## Development server
+Installation by npm or yarn.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+* yarn add @acpaas-ui-widgets/ngx-location-leaflet-widget
+* npm install --save @acpaas-ui-widgets/ngx-location-leaflet-widget
 
-## Code scaffolding
+The widget comes with certain dependencies that have to be installed.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+npm install @acpaas-ui-widgets/ngx-location-picker @acpaas-ui/flyout 
+@acpaas-ui/flyout @acpaas-ui/leaflet @acpaas-ui/mask @acpaas-ui/selectable-list @angular/platform-server --save
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+## Usage
+Insert LocationPickerLeafletModule in your app.module.ts.
 
-## Running unit tests
+On desired component location: 
+<aui-location-leaflet-smart-widget></aui-location-leaflet-smart-widget>
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+###Required component inputs
+* locationPickerUrl= string
+* leafletMap = leafletMap
+* layer= layer
 
-## Running end-to-end tests
+example:
+* locationPickerUrl= 'http://localhost:9999'
+* leafletMap = 
+new LeafletMap({
+                       zoom: 13, // default zoom level
+                       center: [51.215, 4.425], // default center point
+                       onAddPolygon: (layer) => {},
+                       onAddLine: (layer) => {},
+                       onEditFeature: (feature) => {},
+                   });
+* layer= any Leaflet Layer. baseMapWorldGray and baseMapAntwerp default imported by ALeaflet component.
+                             
+###Component outputs
+* addressResolvedCallback = function($event)
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Output will have following model properties:
+* latLng: {lat:number,lng:number};
+* lambert: {x:number,y:number};
+* placeDescription: string;
+* locationSubmitter: string;
+* houseNumber: number;
+* postalCode: string;
+* municipality: string;
+* country: string;
+* street: string;
+* city: string;

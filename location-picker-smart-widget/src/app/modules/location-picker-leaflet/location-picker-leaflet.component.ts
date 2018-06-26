@@ -86,11 +86,17 @@ export class LocationPickerLeafletComponent implements OnInit {
 
     private locationPickerValueChanged = (location: LocationPickerValue) => {
         // Location picker valua has changed, which means there is a result from the server
-        if (!location || !location.coordinates.latLng) return;
+
+        if (!location || !location.coordinates.latLng) {
+            console.log(location.id);
+            // centroid logic
+            return
+        };
         this.aLocation.latLng = location.coordinates.latLng;
         this.aLocation.lambert = location.coordinates.lambert;
         this.aLocation.street = location.street;
         this.aLocation.placeDescription = location.name;
+
 
         this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng], 25);
         this.emitValue();
