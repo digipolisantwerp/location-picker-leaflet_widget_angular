@@ -1,2 +1,0 @@
-# location-picker-widget-app
-

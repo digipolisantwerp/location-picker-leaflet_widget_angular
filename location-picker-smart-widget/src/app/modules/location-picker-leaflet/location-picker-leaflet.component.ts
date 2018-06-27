@@ -20,8 +20,9 @@ L.Icon.Default.mergeOptions({
 export class LocationPickerLeafletComponent implements OnInit {
 
     private locationPicker: LocationPickerValue;
+    private locationPickerEndpoint = '/api/locations';
     private aLocation = new ALocation({});
-    @Input() locationPickerUrl: string;
+    @Input() locationApiHost: string;
     @Input() leafletMap: LeafletMap;
     @Input() layer: LeafletLayer;
     @Output() addressResolvedCallback: EventEmitter<ALocation> = new EventEmitter<ALocation>();
@@ -36,7 +37,7 @@ export class LocationPickerLeafletComponent implements OnInit {
 
 
         // Checks  the required attributes
-        if (!this.locationPickerUrl) throw new Error('Attribute \'locationPickerUrl\' is required on aui-location-leaflet-smart-widget element.');
+        if (!this.locationApiHost) throw new Error('Attribute \'locationPickerUrl\' is required on aui-location-leaflet-smart-widget element.');
         if (!this.leafletMap) throw new Error('Attribute \'leafletMap\' is required on aui-location-leaflet-smart-widget element.');
         if (!this.layer) throw new Error('Attribute \'layer\' is required on aui-location-leaflet-smart-widget element.');
 
@@ -67,8 +68,11 @@ export class LocationPickerLeafletComponent implements OnInit {
 
 
                 // Calling the server to get location from coordinates.
-                this.locationPickerLeafletService.getLocationFromCoordinates(this.locationPickerUrl, this.leafletMap.map.getCenter()).then(response => {
-                    console.log(response);
+                this.locationPickerLeafletService.getLocationFromCoordinates(this.locationApiHost, this.leafletMap.map.getCenter()).then(location => {
+                    console.log(location);
+                    this.mapResponseToALocation(location);
+                    this.emitValue();
+
                 }).catch(err => {
                     console.log(err);
                 });
@@ -83,6 +87,16 @@ export class LocationPickerLeafletComponent implements OnInit {
         // console.log(this.aLocation);
         this.addressResolvedCallback.emit(this.aLocation);
     };
+    private mapResponseToALocation = (location => {
+        this.locationPicker = location;
+        this.aLocation.latLng = location.coordinates.latLng;
+        this.aLocation.lambert = location.coordinates.lambert;
+        this.aLocation.street = location.street;
+        this.aLocation.placeDescription = location.name;
+        this.aLocation.postalCode = location.postal;
+        this.aLocation.houseNumber = location.number;
+        this.aLocation.locationSubmitter = location.locationType;
+    });
 
     private locationPickerValueChanged = (location: LocationPickerValue) => {
         // Location picker valua has changed, which means there is a result from the server
@@ -90,14 +104,10 @@ export class LocationPickerLeafletComponent implements OnInit {
         if (!location || !location.coordinates.latLng) {
             console.log(location.id);
             // centroid logic
-            return
-        };
-        this.aLocation.latLng = location.coordinates.latLng;
-        this.aLocation.lambert = location.coordinates.lambert;
-        this.aLocation.street = location.street;
-        this.aLocation.placeDescription = location.name;
-
-
+            return;
+        }
+        console.log(location.coordinates);
+        this.mapResponseToALocation(location);
         this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng], 25);
         this.emitValue();
     };

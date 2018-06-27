@@ -10,7 +10,7 @@ import { baseMapWorldGray, LeafletLayer, LeafletMap } from '@acpaas-ui/leaflet';
 export class AppComponent {
 
     layer: LeafletLayer = baseMapWorldGray;
-    url: string = 'http://localhost:9999/api/locations';
+    url: string = 'http://localhost:9999';
     leafletMap: LeafletMap = new LeafletMap({
         zoom: 13, // default zoom level
         center: [51.215, 4.425], // default center point
