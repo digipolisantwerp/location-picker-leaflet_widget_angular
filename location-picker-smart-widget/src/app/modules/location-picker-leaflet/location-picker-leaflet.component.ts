@@ -4,6 +4,7 @@ import { LeafletLayer, LeafletMap } from '@acpaas-ui/leaflet';
 import * as L from 'leaflet';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 import { ALocation } from './ALocation.domain';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -25,6 +26,7 @@ export class LocationPickerLeafletComponent implements OnInit {
     @Input() locationApiHost: string;
     @Input() leafletMap: LeafletMap;
     @Input() layer: LeafletLayer;
+    @Input() coordinatesTrigger: BehaviorSubject<{ lat: number, lng: number }>;
     @Output() addressResolvedCallback: EventEmitter<ALocation> = new EventEmitter<ALocation>();
 
     private marker: L.marker;
@@ -33,8 +35,6 @@ export class LocationPickerLeafletComponent implements OnInit {
     }
 
     ngOnInit() {
-
-
 
         // Checks  the required attributes
         if (!this.locationApiHost) throw new Error('Attribute \'locationPickerUrl\' is required on aui-location-leaflet-smart-widget element.');
@@ -64,25 +64,40 @@ export class LocationPickerLeafletComponent implements OnInit {
 
             // Subscribe to the dragend event. This will only trigger when the user stopped moving the map.
             // Using this event to prevent continuous calls
-            this.leafletMap.map.on('dragend', () => {
+            this.leafletMap.map.on('dragend', (e) => {
 
-
+                console.log(e);
                 // Calling the server to get location from coordinates.
-                this.locationPickerLeafletService.getLocationFromCoordinates(this.locationApiHost, this.leafletMap.map.getCenter()).then(location => {
-                    console.log(location);
-                    this.mapResponseToALocation(location);
-                    this.emitValue();
-
-                }).catch(err => {
-                    console.log(err);
-                });
+                this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
 
             });
+
+            if (this.coordinatesTrigger) {
+                this.coordinatesTrigger.subscribe(coordinates => {
+                    console.log(coordinates);
+                    if(!coordinates.lat || !coordinates.lng){
+                        return;
+                    }
+                    this.getLocationFromCoordinates(coordinates);
+                    this.leafletMap.setView([coordinates.lat, coordinates.lng], 25);
+                });
+
+            }
 
         });
 
     }
 
+    private getLocationFromCoordinates = (coordinates) => {
+        this.locationPickerLeafletService.getLocationFromCoordinates(this.locationApiHost, coordinates).then(location => {
+            console.log(location);
+            this.mapResponseToALocation(location);
+            this.emitValue();
+
+        }).catch(err => {
+            console.log(err);
+        });
+    };
     private emitValue = () => {
         // console.log(this.aLocation);
         this.addressResolvedCallback.emit(this.aLocation);
