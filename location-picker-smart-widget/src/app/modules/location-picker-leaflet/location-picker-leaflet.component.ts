@@ -49,9 +49,6 @@ export class LocationPickerLeafletComponent implements OnInit {
             this.leafletMap.addTileLayer(baseMapWorldGray);
             this.leafletMap.addTileLayer(baseMapAntwerp);
 
-            // Try to locate the user
-            this.leafletMap.locate();
-
             // Declare a marker with standard icon, widget can be expanded with custom icon support.
             this.marker = new L.marker(this.leafletMap.map.getCenter());
 
@@ -107,8 +104,8 @@ export class LocationPickerLeafletComponent implements OnInit {
     };
     private mapResponseToALocation = (location => {
         this.locationPicker = location;
-        this.aLocation.latLng = location.coordinates.latLng;
-        this.aLocation.lambert = location.coordinates.lambert;
+        this.aLocation.latLng = location.coordinates ? location.coordinates.latLng : { lat: undefined, lng: undefined };
+        this.aLocation.lambert = location.coordinates ? location.coordinates.lambert : { x: undefined, y: undefined };
         this.aLocation.street = location.street;
         this.aLocation.placeDescription = location.name;
         this.aLocation.postalCode = location.postal;
@@ -119,7 +116,7 @@ export class LocationPickerLeafletComponent implements OnInit {
     private locationPickerValueChanged = (location: LocationPickerValue) => {
         // Location picker valua has changed, which means there is a result from the server
 
-        if (!location || !location.coordinates.latLng) {
+        if (!location || !location.coordinates || !location.coordinates.latLng) {
             console.log(location.id);
             // centroid logic
             return;
