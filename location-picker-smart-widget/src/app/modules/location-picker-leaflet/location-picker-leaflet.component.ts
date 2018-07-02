@@ -23,7 +23,7 @@ export class LocationPickerLeafletComponent implements OnInit {
     public static LEAFLET_DEFAULT_ZOOM = 16;
     private locationPicker: LocationPickerValue;
     private locationPickerEndpoint = '/api/locations';
-    private aLocation = new ALocation({});
+    aLocation = new ALocation({});
     @Input() locationApiHost: string;
     @Input() leafletMap: LeafletMap;
     @Input() coordinatesTrigger: BehaviorSubject<{ lat: number, lng: number }>;
@@ -37,7 +37,7 @@ export class LocationPickerLeafletComponent implements OnInit {
     ngOnInit() {
 
         // Checks  the required attributes
-        if (!this.locationApiHost) throw new Error('Attribute \'locationPickerUrl\' is required on aui-location-leaflet-smart-widget element.');
+        if (!this.locationApiHost) throw new Error('Attribute \'locationApiHost\' is required on aui-location-leaflet-smart-widget element.');
         if (!this.leafletMap) throw new Error('Attribute \'leafletMap\' is required on aui-location-leaflet-smart-widget element.');
 
         // Layer can only be drawn on the leaflet after it has been initted.
@@ -88,7 +88,7 @@ export class LocationPickerLeafletComponent implements OnInit {
 
     }
 
-    private getLocationFromCoordinates = (coordinates) => {
+     getLocationFromCoordinates = (coordinates) => {
         this.locationPickerLeafletService.getLocationFromCoordinates(this.locationApiHost, coordinates).then(location => {
             console.log(location);
             this.mapResponseToALocation(location);
@@ -98,11 +98,13 @@ export class LocationPickerLeafletComponent implements OnInit {
             console.log(err);
         });
     };
-    private emitValue = () => {
+     emitValue = () => {
         // console.log(this.aLocation);
+
         this.addressResolvedCallback.emit(this.aLocation);
     };
-    private mapResponseToALocation = (location => {
+    mapResponseToALocation = (location) => {
+        console.log(location);
         this.locationPicker = location;
         this.aLocation.latLng = location.coordinates ? location.coordinates.latLng : { lat: undefined, lng: undefined };
         this.aLocation.lambert = location.coordinates ? location.coordinates.lambert : { x: undefined, y: undefined };
@@ -111,11 +113,12 @@ export class LocationPickerLeafletComponent implements OnInit {
         this.aLocation.postalCode = location.postal;
         this.aLocation.houseNumber = location.number;
         this.aLocation.locationSubmitter = location.locationType;
-    });
+        this.aLocation.name = location.name;
+    };
 
-    private locationPickerValueChanged = (location: LocationPickerValue) => {
+     locationPickerValueChanged = (location: LocationPickerValue) => {
         // Location picker valua has changed, which means there is a result from the server
-
+        console.log(JSON.stringify(location));
         if (!location || !location.coordinates || !location.coordinates.latLng) {
             console.log(location.id);
             // centroid logic
@@ -123,8 +126,9 @@ export class LocationPickerLeafletComponent implements OnInit {
         }
         console.log(location.coordinates);
         this.mapResponseToALocation(location);
+         this.emitValue();
         this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
-        this.emitValue();
+
     };
 
 }

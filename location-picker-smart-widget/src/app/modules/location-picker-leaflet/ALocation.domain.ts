@@ -1,7 +1,7 @@
 export class ALocation {
 
-    latLng: {lat:number,lng:number};
-    lambert: {x:number,y:number};
+    latLng: { lat: number, lng: number };
+    lambert: { x: number, y: number };
     placeDescription: string;
     locationSubmitter: string;
     houseNumber: number;
@@ -10,6 +10,7 @@ export class ALocation {
     country: string;
     street: string;
     city: string;
+    name: string;
 
     constructor(data: any) {
         this.latLng = data.latLng ? data.latLng : {};
@@ -22,5 +23,6 @@ export class ALocation {
         this.country = data.country ? data.country : null;
         this.street = data.street ? data.street : null;
         this.city = data.city ? data.city : null;
+        this.name = data.name ? data.name : null;
     }
 }
