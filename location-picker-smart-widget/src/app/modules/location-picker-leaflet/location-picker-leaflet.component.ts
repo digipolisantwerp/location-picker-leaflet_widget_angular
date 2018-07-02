@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LocationPickerValue } from '@acpaas-ui-widgets/ngx-location-picker';
-import { LeafletLayer, LeafletMap } from '@acpaas-ui/leaflet';
+import { baseMapAntwerp, baseMapWorldGray, LeafletMap } from '@acpaas-ui/leaflet';
 import * as L from 'leaflet';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 import { ALocation } from './ALocation.domain';
@@ -20,12 +20,12 @@ L.Icon.Default.mergeOptions({
 })
 export class LocationPickerLeafletComponent implements OnInit {
 
+    public static LEAFLET_DEFAULT_ZOOM = 16;
     private locationPicker: LocationPickerValue;
     private locationPickerEndpoint = '/api/locations';
     private aLocation = new ALocation({});
     @Input() locationApiHost: string;
     @Input() leafletMap: LeafletMap;
-    @Input() layer: LeafletLayer;
     @Input() coordinatesTrigger: BehaviorSubject<{ lat: number, lng: number }>;
     @Output() addressResolvedCallback: EventEmitter<ALocation> = new EventEmitter<ALocation>();
 
@@ -39,14 +39,18 @@ export class LocationPickerLeafletComponent implements OnInit {
         // Checks  the required attributes
         if (!this.locationApiHost) throw new Error('Attribute \'locationPickerUrl\' is required on aui-location-leaflet-smart-widget element.');
         if (!this.leafletMap) throw new Error('Attribute \'leafletMap\' is required on aui-location-leaflet-smart-widget element.');
-        if (!this.layer) throw new Error('Attribute \'layer\' is required on aui-location-leaflet-smart-widget element.');
 
         // Layer can only be drawn on the leaflet after it has been initted.
         this.leafletMap.onInit.subscribe(() => {
 
 
             // Adding the layer to the leaflet.
-            this.leafletMap.addTileLayer(this.layer);
+
+            this.leafletMap.addTileLayer(baseMapWorldGray);
+            this.leafletMap.addTileLayer(baseMapAntwerp);
+
+            // Try to locate the user
+            this.leafletMap.locate();
 
             // Declare a marker with standard icon, widget can be expanded with custom icon support.
             this.marker = new L.marker(this.leafletMap.map.getCenter());
@@ -64,9 +68,8 @@ export class LocationPickerLeafletComponent implements OnInit {
 
             // Subscribe to the dragend event. This will only trigger when the user stopped moving the map.
             // Using this event to prevent continuous calls
-            this.leafletMap.map.on('dragend', (e) => {
+            this.leafletMap.map.on('dragend', () => {
 
-                console.log(e);
                 // Calling the server to get location from coordinates.
                 this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
 
@@ -75,11 +78,11 @@ export class LocationPickerLeafletComponent implements OnInit {
             if (this.coordinatesTrigger) {
                 this.coordinatesTrigger.subscribe(coordinates => {
                     console.log(coordinates);
-                    if(!coordinates.lat || !coordinates.lng){
+                    if (!coordinates.lat || !coordinates.lng) {
                         return;
                     }
                     this.getLocationFromCoordinates(coordinates);
-                    this.leafletMap.setView([coordinates.lat, coordinates.lng], 25);
+                    this.leafletMap.setView([coordinates.lat, coordinates.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
                 });
 
             }
@@ -123,7 +126,7 @@ export class LocationPickerLeafletComponent implements OnInit {
         }
         console.log(location.coordinates);
         this.mapResponseToALocation(location);
-        this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng], 25);
+        this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
         this.emitValue();
     };
 
