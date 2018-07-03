@@ -23,7 +23,17 @@ export class LocationPickerLeafletComponent implements OnInit {
     public static LEAFLET_DEFAULT_ZOOM = 16;
 
     @Input() locationApiHost: string;
-    @Input() coordinatesTrigger: BehaviorSubject<{ lat: number, lng: number }>;
+    @Input() coordinatesTriggerSubject: BehaviorSubject<{ lat: number, lng: number }>;
+    @Input('coordinatesTrigger')
+    set coordinatesTrigger(coordinates: { lat: number; lng: number }) {
+        // this._coordinatesTrigger = coordinates;
+        console.log(coordinates)
+        if (!coordinates || !coordinates.lat || !coordinates.lng || !this.leafletMap) {
+            return;
+        }
+        this.getLocationFromCoordinates(coordinates);
+        this.leafletMap.setView([coordinates.lat, coordinates.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
+    }
     @Output() locationChange: EventEmitter<ALocation> = new EventEmitter<ALocation>();
 
     private locationPicker: LocationPickerValue;
@@ -41,6 +51,7 @@ export class LocationPickerLeafletComponent implements OnInit {
         onEditFeature: (feature) => {
         }
     });
+
 
 
 
@@ -84,12 +95,10 @@ export class LocationPickerLeafletComponent implements OnInit {
 
             });
 
-
-
         });
 
-        if (this.coordinatesTrigger) {
-            this.coordinatesTrigger.subscribe(coordinates => {
+        if (this.coordinatesTriggerSubject) {
+            this.coordinatesTriggerSubject.subscribe(coordinates => {
                 if (!coordinates.lat || !coordinates.lng) {
                     return;
                 }
@@ -100,7 +109,7 @@ export class LocationPickerLeafletComponent implements OnInit {
 
     }
 
-     getLocationFromCoordinates = (coordinates) => {
+    getLocationFromCoordinates = (coordinates) => {
         this.locationPickerLeafletService.getLocationFromCoordinates(this.locationApiHost, coordinates).then(location => {
             this.mapResponseToALocation(location);
             this.emitValue();
@@ -109,7 +118,7 @@ export class LocationPickerLeafletComponent implements OnInit {
             console.log(err);
         });
     };
-     emitValue = () => {
+    emitValue = () => {
         this.locationChange.emit(this.aLocation);
     };
     mapResponseToALocation = (location) => {
@@ -125,7 +134,7 @@ export class LocationPickerLeafletComponent implements OnInit {
         this.aLocation.name = location.name;
     };
 
-     locationPickerValueChanged = (location: LocationPickerValue) => {
+    locationPickerValueChanged = (location: LocationPickerValue) => {
         // Location picker valua has changed, which means there is a result from the server
         if (!location || !location.coordinates || !location.coordinates.latLng) {
             // centroid logic
@@ -133,7 +142,7 @@ export class LocationPickerLeafletComponent implements OnInit {
         }
 
         this.mapResponseToALocation(location);
-         this.emitValue();
+        this.emitValue();
         this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
 
     };
