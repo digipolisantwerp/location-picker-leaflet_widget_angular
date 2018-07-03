@@ -1,24 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import * as L from 'leaflet';
 import { LocationPickerLeafletComponent } from './location-picker-leaflet.component';
-import { LeafletMap, LeafletModule } from '@acpaas-ui/leaflet';
+import { LeafletModule } from '@acpaas-ui/leaflet';
 import { LocationPickerModule } from '@acpaas-ui-widgets/ngx-location-picker';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
+import { LocationPickerValue } from '@acpaas-ui-widgets/ngx-location-picker';
 describe('LocationPickerLeafletComponent', () => {
 
-    const dummyLocation = {
+    const dummyLocation:LocationPickerValue = {
         'id': 'P_DA/Locaties/MapServer/18/1168460',
         'name': 'Burgemeester De Boeylaan (Deurne)',
         'layer': 'straatnaam',
-        locationType: 'street',
+        'locationType':  'street',
         'coordinates': {
             'lambert': { 'x': 157363.64272261, 'y': 211151.08926489 },
             'latLng': { 'lat': 51.21025180508141, 'lng': 4.474143732169805 }
         },
         'street': 'Burgemeester De Boeylaan',
-        'district': 'Deurne'
     };
     let component: LocationPickerLeafletComponent;
     let element: any;
@@ -41,16 +39,6 @@ describe('LocationPickerLeafletComponent', () => {
         component = fixture.componentInstance;
         element = fixture.nativeElement;
         component.coordinatesTrigger = new BehaviorSubject({ lat: null, lng: null });
-        component.leafletMap = new LeafletMap({
-            zoom: LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM, // default zoom level
-            center: [51.215, 4.425], // default center point
-            onAddPolygon: (layer) => {
-            },
-            onAddLine: (layer) => {
-            },
-            onEditFeature: (feature) => {
-            }
-        });
         component.locationApiHost = 'https://localhost';
         service = TestBed.get(LocationPickerLeafletService);
     });
@@ -69,13 +57,6 @@ describe('LocationPickerLeafletComponent', () => {
     });
     it('should throw error when locationApiHost is null.', () => {
         component.locationApiHost = null;
-        expect(() => {
-            component.ngOnInit();
-            throw new Error();
-        }).toThrow();
-    });
-    it('should throw error when leaflet is null.', () => {
-        component.leafletMap = null;
         expect(() => {
             component.ngOnInit();
             throw new Error();
@@ -102,6 +83,12 @@ describe('LocationPickerLeafletComponent', () => {
         spyOn(component.addressResolvedCallback, 'emit');
         component.locationPickerValueChanged(dummyLocation);
         expect(component.addressResolvedCallback.emit).toHaveBeenCalled();
+    });
+    it('should not emit when locationpicker value changed with no coordinates', () => {
+        spyOn(component.addressResolvedCallback, 'emit');
+        dummyLocation.coordinates = null;
+        component.locationPickerValueChanged(dummyLocation);
+        expect(component.addressResolvedCallback.emit).toHaveBeenCalledTimes(0);
     });
 
     it('should receive location from server when coordinatesTrigger changes.', () => {

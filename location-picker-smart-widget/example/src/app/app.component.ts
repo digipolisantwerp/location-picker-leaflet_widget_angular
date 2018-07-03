@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { baseMapWorldGray, LeafletLayer, LeafletMap } from '@acpaas-ui/leaflet';
 import { LocationPickerValue } from '@acpaas-ui-widgets/ngx-location-picker';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-root',
@@ -10,18 +11,13 @@ import { LocationPickerValue } from '@acpaas-ui-widgets/ngx-location-picker';
 export class AppComponent {
   title = 'app';
 
-    layer:LeafletLayer =baseMapWorldGray;
-    picker: LocationPickerValue;
-    url:string='http://localhost:9999/api/locations';
-    leafletMap: LeafletMap = new LeafletMap({
-        zoom: 13, // default zoom level
-        center: [51.215, 4.425], // default center point
-        onAddPolygon: (layer) => {},
-        onAddLine: (layer) => {},
-        onEditFeature: (feature) => {},
-    });
+    url: string = 'http://localhost:9999';
+    trigger: BehaviorSubject<{ lat: number, lng: number }> = new BehaviorSubject({ lat: null, lng: null });
 
-    addressResolvedCallback= (location) =>{
-        console.log(location);
+    constructor() {
     }
+
+    addressResolvedCallback = (location) => {
+        console.log(location);
+    };
 }

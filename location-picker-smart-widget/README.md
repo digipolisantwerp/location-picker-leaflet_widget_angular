@@ -20,21 +20,18 @@ On desired component location:
 <aui-location-leaflet-smart-widget></aui-location-leaflet-smart-widget>
 
 ###Required component inputs
-* locationPickerUrl= string
-* leafletMap = leafletMap
-* layer= layer
+* locationPickerUrl= string => points to the location-picker backend host. 
 
-example:
+
+###Optional component inputs
+* coordinatesTrigger =  BehaviorSubject({ lat: number, lng: number }); 
+=> can be used to trigger an external location change.
+
+###example:
 * locationPickerUrl= 'http://localhost:9999'
-* leafletMap = 
-new LeafletMap({
-                       zoom: 13, // default zoom level
-                       center: [51.215, 4.425], // default center point
-                       onAddPolygon: (layer) => {},
-                       onAddLine: (layer) => {},
-                       onEditFeature: (feature) => {},
-                   });
-* layer= any Leaflet Layer. baseMapWorldGray and baseMapAntwerp default imported by ALeaflet component.
+* coordinatesTrigger = new BehaviorSubject({ lat: null, lng: null });
+
+                  
                              
 ###Component outputs
 * addressResolvedCallback = function($event)

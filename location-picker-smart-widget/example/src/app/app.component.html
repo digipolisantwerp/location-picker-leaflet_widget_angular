@@ -1,7 +1,5 @@
 <aui-location-leaflet-smart-widget class="widget"
-
-                                   [locationApiHost]="url"
-                                   [leafletMap]="leafletMap"
-                                   [layer]="layer"
+                                   [coordinatesTrigger]="trigger"
+                                   [locationApiHost]=url
                                    (addressResolvedCallback)="addressResolvedCallback($event)"
 ></aui-location-leaflet-smart-widget>

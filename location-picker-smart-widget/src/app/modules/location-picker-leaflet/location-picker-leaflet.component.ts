@@ -21,15 +21,29 @@ L.Icon.Default.mergeOptions({
 export class LocationPickerLeafletComponent implements OnInit {
 
     public static LEAFLET_DEFAULT_ZOOM = 16;
-    private locationPicker: LocationPickerValue;
-    private locationPickerEndpoint = '/api/locations';
-    aLocation = new ALocation({});
+
     @Input() locationApiHost: string;
-    @Input() leafletMap: LeafletMap;
     @Input() coordinatesTrigger: BehaviorSubject<{ lat: number, lng: number }>;
     @Output() addressResolvedCallback: EventEmitter<ALocation> = new EventEmitter<ALocation>();
 
+    private locationPicker: LocationPickerValue;
+    private locationPickerEndpoint = '/api/locations';
     private marker: L.marker;
+    aLocation = new ALocation({});
+
+    leafletMap: LeafletMap = new LeafletMap({
+        zoom: LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM, // default zoom level
+        center: [51.215, 4.425], // default center point
+        onAddPolygon: (layer) => {
+        },
+        onAddLine: (layer) => {
+        },
+        onEditFeature: (feature) => {
+        }
+    });
+
+
+
 
     constructor(private locationPickerLeafletService: LocationPickerLeafletService) {
     }
@@ -38,7 +52,6 @@ export class LocationPickerLeafletComponent implements OnInit {
 
         // Checks  the required attributes
         if (!this.locationApiHost) throw new Error('Attribute \'locationApiHost\' is required on aui-location-leaflet-smart-widget element.');
-        if (!this.leafletMap) throw new Error('Attribute \'leafletMap\' is required on aui-location-leaflet-smart-widget element.');
 
         // Layer can only be drawn on the leaflet after it has been initted.
         this.leafletMap.onInit.subscribe(() => {
@@ -65,7 +78,7 @@ export class LocationPickerLeafletComponent implements OnInit {
             // Subscribe to the dragend event. This will only trigger when the user stopped moving the map.
             // Using this event to prevent continuous calls
             this.leafletMap.map.on('dragend', () => {
-                
+
                 // Calling the server to get location from coordinates.
                 this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
 
@@ -83,14 +96,12 @@ export class LocationPickerLeafletComponent implements OnInit {
                 this.getLocationFromCoordinates(coordinates);
                 this.leafletMap.setView([coordinates.lat, coordinates.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
             });
-
         }
 
     }
 
      getLocationFromCoordinates = (coordinates) => {
         this.locationPickerLeafletService.getLocationFromCoordinates(this.locationApiHost, coordinates).then(location => {
-            console.log(location);
             this.mapResponseToALocation(location);
             this.emitValue();
 
@@ -117,7 +128,6 @@ export class LocationPickerLeafletComponent implements OnInit {
      locationPickerValueChanged = (location: LocationPickerValue) => {
         // Location picker valua has changed, which means there is a result from the server
         if (!location || !location.coordinates || !location.coordinates.latLng) {
-            console.log(location.id);
             // centroid logic
             return;
         }
