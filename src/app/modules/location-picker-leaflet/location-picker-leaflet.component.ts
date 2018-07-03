@@ -5,13 +5,9 @@ import * as L from 'leaflet';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 import { ALocation } from './ALocation.domain';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import './leafletMarkerFix'
 
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-    iconUrl: require('leaflet/dist/images/marker-icon.png'),
-    shadowUrl: require('leaflet/dist/images/marker-shadow.png')
-});
+
 
 @Component({
     selector: 'aui-location-picker-leaflet',
