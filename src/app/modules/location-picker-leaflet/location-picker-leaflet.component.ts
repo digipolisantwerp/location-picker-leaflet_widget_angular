@@ -24,7 +24,7 @@ export class LocationPickerLeafletComponent implements OnInit {
 
     @Input() locationApiHost: string;
     @Input() coordinatesTrigger: BehaviorSubject<{ lat: number, lng: number }>;
-    @Output() addressResolvedCallback: EventEmitter<ALocation> = new EventEmitter<ALocation>();
+    @Output() locationChange: EventEmitter<ALocation> = new EventEmitter<ALocation>();
 
     private locationPicker: LocationPickerValue;
     private locationPickerEndpoint = '/api/locations';
@@ -110,7 +110,7 @@ export class LocationPickerLeafletComponent implements OnInit {
         });
     };
      emitValue = () => {
-        this.addressResolvedCallback.emit(this.aLocation);
+        this.locationChange.emit(this.aLocation);
     };
     mapResponseToALocation = (location) => {
 
