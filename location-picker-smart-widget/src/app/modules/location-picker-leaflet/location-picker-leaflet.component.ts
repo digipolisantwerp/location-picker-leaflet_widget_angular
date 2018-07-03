@@ -45,7 +45,6 @@ export class LocationPickerLeafletComponent implements OnInit {
 
 
             // Adding the layer to the leaflet.
-
             this.leafletMap.addTileLayer(baseMapWorldGray);
             this.leafletMap.addTileLayer(baseMapAntwerp);
 
@@ -66,25 +65,26 @@ export class LocationPickerLeafletComponent implements OnInit {
             // Subscribe to the dragend event. This will only trigger when the user stopped moving the map.
             // Using this event to prevent continuous calls
             this.leafletMap.map.on('dragend', () => {
-
+                
                 // Calling the server to get location from coordinates.
                 this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
 
             });
 
-            if (this.coordinatesTrigger) {
-                this.coordinatesTrigger.subscribe(coordinates => {
-                    console.log(coordinates);
-                    if (!coordinates.lat || !coordinates.lng) {
-                        return;
-                    }
-                    this.getLocationFromCoordinates(coordinates);
-                    this.leafletMap.setView([coordinates.lat, coordinates.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
-                });
 
-            }
 
         });
+
+        if (this.coordinatesTrigger) {
+            this.coordinatesTrigger.subscribe(coordinates => {
+                if (!coordinates.lat || !coordinates.lng) {
+                    return;
+                }
+                this.getLocationFromCoordinates(coordinates);
+                this.leafletMap.setView([coordinates.lat, coordinates.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
+            });
+
+        }
 
     }
 
@@ -99,12 +99,10 @@ export class LocationPickerLeafletComponent implements OnInit {
         });
     };
      emitValue = () => {
-        // console.log(this.aLocation);
-
         this.addressResolvedCallback.emit(this.aLocation);
     };
     mapResponseToALocation = (location) => {
-        console.log(location);
+
         this.locationPicker = location;
         this.aLocation.latLng = location.coordinates ? location.coordinates.latLng : { lat: undefined, lng: undefined };
         this.aLocation.lambert = location.coordinates ? location.coordinates.lambert : { x: undefined, y: undefined };
@@ -118,13 +116,12 @@ export class LocationPickerLeafletComponent implements OnInit {
 
      locationPickerValueChanged = (location: LocationPickerValue) => {
         // Location picker valua has changed, which means there is a result from the server
-        console.log(JSON.stringify(location));
         if (!location || !location.coordinates || !location.coordinates.latLng) {
             console.log(location.id);
             // centroid logic
             return;
         }
-        console.log(location.coordinates);
+
         this.mapResponseToALocation(location);
          this.emitValue();
         this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);

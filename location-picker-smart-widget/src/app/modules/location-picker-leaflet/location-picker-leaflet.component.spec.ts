@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import * as L from 'leaflet';
 import { LocationPickerLeafletComponent } from './location-picker-leaflet.component';
 import { LeafletMap, LeafletModule } from '@acpaas-ui/leaflet';
 import { LocationPickerModule } from '@acpaas-ui-widgets/ngx-location-picker';
@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 describe('LocationPickerLeafletComponent', () => {
 
-    const testLocation = {
+    const dummyLocation = {
         'id': 'P_DA/Locaties/MapServer/18/1168460',
         'name': 'Burgemeester De Boeylaan (Deurne)',
         'layer': 'straatnaam',
@@ -40,7 +40,7 @@ describe('LocationPickerLeafletComponent', () => {
         fixture = TestBed.createComponent(LocationPickerLeafletComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
-
+        component.coordinatesTrigger = new BehaviorSubject({ lat: null, lng: null });
         component.leafletMap = new LeafletMap({
             zoom: LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM, // default zoom level
             center: [51.215, 4.425], // default center point
@@ -83,14 +83,14 @@ describe('LocationPickerLeafletComponent', () => {
     });
 
     it('Should map correctly', () => {
-        component.mapResponseToALocation(testLocation);
-        expect(component.aLocation.placeDescription).toEqual(testLocation.name);
-        expect(component.aLocation.latLng).toEqual(testLocation.coordinates.latLng);
-        expect(component.aLocation.lambert).toEqual(testLocation.coordinates.lambert);
-        expect(component.aLocation.name).toEqual(testLocation.name);
-        expect(component.aLocation.street).toEqual(testLocation.street);
+        component.mapResponseToALocation(dummyLocation);
+        expect(component.aLocation.placeDescription).toEqual(dummyLocation.name);
+        expect(component.aLocation.latLng).toEqual(dummyLocation.coordinates.latLng);
+        expect(component.aLocation.lambert).toEqual(dummyLocation.coordinates.lambert);
+        expect(component.aLocation.name).toEqual(dummyLocation.name);
+        expect(component.aLocation.street).toEqual(dummyLocation.street);
         expect(component.aLocation.postalCode).toEqual(undefined);
-        expect(component.aLocation.locationSubmitter).toEqual(testLocation.locationType);
+        expect(component.aLocation.locationSubmitter).toEqual(dummyLocation.locationType);
     });
 
     it('should emit when emit is called', () => {
@@ -100,13 +100,12 @@ describe('LocationPickerLeafletComponent', () => {
     });
     it('should emit when locationpicker value changed', () => {
         spyOn(component.addressResolvedCallback, 'emit');
-        component.locationPickerValueChanged(testLocation);
+        component.locationPickerValueChanged(dummyLocation);
         expect(component.addressResolvedCallback.emit).toHaveBeenCalled();
     });
 
     it('should receive location from server when coordinatesTrigger changes.', () => {
         spyOn(component, 'getLocationFromCoordinates');
-        component.coordinatesTrigger = new BehaviorSubject({ lat: null, lng: null });
         component.ngOnInit();
         component.coordinatesTrigger.next({ lat: 51.21025180508141, lng: 4.474143732169805 });
         expect(component.getLocationFromCoordinates).toHaveBeenCalled();
