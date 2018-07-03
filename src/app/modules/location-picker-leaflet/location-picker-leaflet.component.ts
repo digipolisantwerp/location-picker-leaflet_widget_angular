@@ -14,7 +14,7 @@ L.Icon.Default.mergeOptions({
 });
 
 @Component({
-    selector: 'aui-location-leaflet-smart-widget',
+    selector: 'aui-location-picker-leaflet',
     templateUrl: './location-picker-leaflet.component.html',
     styleUrls: ['./location-picker-leaflet.component.css']
 })
