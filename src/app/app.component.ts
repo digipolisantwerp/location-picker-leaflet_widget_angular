@@ -13,7 +13,6 @@ export class AppComponent {
 
     url: string = 'http://localhost:9999';
     trigger: BehaviorSubject<{ lat: number, lng: number }> = new BehaviorSubject({ lat: null, lng: null });
-
     constructor() {
 
     }

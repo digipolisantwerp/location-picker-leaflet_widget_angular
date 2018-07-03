@@ -1,11 +1,11 @@
 {
-  "name": "@acpaas-ui-widgets/ngx-location-leaflet-widget",
+  "name": "@acpaas-ui-widgets/ngx-location-picker-leaflet",
   "description": "Location leaflet picker Smart Widget UI package (Angular)",
   "author": {
     "name": "Jeroen Brock",
     "email": "jeroen.brock@endare.com"
   },
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
