@@ -1,5 +1,7 @@
 # Location picker leaflet.
 
+![screenshot](example.png)
+
 ## Installing the component
 
 Installation by npm or yarn.
@@ -60,3 +62,12 @@ On desired component location:
 
 Output will be an LocationItem model.
 
+## Contributing
+
+We welcome your bug reports and pull requests.
+
+Please see our [contribution guide](CONTRIBUTING.md).
+
+## License
+
+This project is published under the [MIT license](LICENSE.md).
