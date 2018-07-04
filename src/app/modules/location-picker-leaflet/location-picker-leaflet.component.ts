@@ -29,8 +29,6 @@ export class LocationPickerLeafletComponent implements OnInit {
 
     @Input() locationPickerEndpoint: string = null;
     @Input() coordinatesEndpoint: string = null;
-    @Input()
-
 
     @Output() locationChange: EventEmitter<ALocation> = new EventEmitter<ALocation>();
 
@@ -105,7 +103,9 @@ export class LocationPickerLeafletComponent implements OnInit {
     }
 
     getLocationFromCoordinates = (coordinates) => {
-        this.locationPickerLeafletService.getLocationFromCoordinates(this.locationApiHost + this.coordinatesEndpoint ? this.coordinatesEndpoint : this.defaultCoordinatesEndpoint, coordinates).then(location => {
+        this.locationPickerLeafletService.getLocationFromCoordinates(
+            (this.locationApiHost + (this.coordinatesEndpoint ? this.coordinatesEndpoint : this.defaultCoordinatesEndpoint)).toString(), coordinates)
+            .then(location => {
             this.mapResponseToALocation(location);
             this.emitValue();
 
