@@ -18,6 +18,7 @@ export class LocationPickerLeafletComponent implements OnInit {
 
     @Input() locationApiHost: string;
     @Input() coordinatesTriggerSubject: BehaviorSubject<{ lat: number, lng: number }>;
+    @Input()
     set coordinatesTrigger(coordinates: { lat: number; lng: number }) {
         if (!coordinates || !coordinates.lat || !coordinates.lng || !this.leafletMap) {
             return;

@@ -1,10 +1,4 @@
 {
-  "name": "example app leaflet picker",
-  "description": "Example app for location leaflet picker Smart Widget UI package (Angular)",
-  "author": {
-    "name": "Jeroen Brock",
-    "email": "jeroen.brock@endare.com"
-  },
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
@@ -17,9 +11,9 @@
   },
   "private": true,
   "dependencies": {
-    "@acpaas-ui-widgets/ngx-location-leaflet-widget": "file:../dist.tgz",
     "@acpaas-ui-widgets/ngx-location-picker": "^1.0.0",
-    "@acpaas-ui/flyout": "^4.0.2",
+    "@acpaas-ui-widgets/ngx-location-picker-leaflet": "file:../dist/acpaas-ui-widgets-ngx-location-picker-leaflet-0.0.4.tgz",
+    "@acpaas-ui/flyout": "^4.0.3",
     "@acpaas-ui/leaflet": "^0.1.1",
     "@acpaas-ui/mask": "^4.0.0",
     "@acpaas-ui/selectable-list": "^3.0.1",
@@ -31,7 +25,7 @@
     "@angular/http": "^5.2.0",
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
-    "@angular/platform-server": "^6.0.3",
+    "@angular/platform-server": "^6.0.7",
     "@angular/router": "^5.2.0",
     "core-js": "^2.4.1",
     "rxjs": "^5.5.6",

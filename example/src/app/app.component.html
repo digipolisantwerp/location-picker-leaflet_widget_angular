@@ -1,5 +1,6 @@
-<aui-location-leaflet-smart-widget class="widget"
-                                   [coordinatesTrigger]="trigger"
-                                   [locationApiHost]=url
-                                   (addressResolvedCallback)="addressResolvedCallback($event)"
-></aui-location-leaflet-smart-widget>
+<aui-location-picker-leaflet class="widget"
+    [coordinatesTrigger]="triggerNoSubject"
+    [coordinatesTriggerSubject]="trigger"
+    [locationApiHost]=url
+    (locationChange)="addressResolvedCallback($event)"
+></aui-location-picker-leaflet>

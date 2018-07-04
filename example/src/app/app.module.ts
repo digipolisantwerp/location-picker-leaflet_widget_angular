@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { LocationPickerLeafletModule } from '@acpaas-ui-widgets/ngx-location-leaflet-widget';
+import { LocationPickerLeafletModule } from '@acpaas-ui-widgets/ngx-location-picker-leaflet';
 
 
 @NgModule({
@@ -11,7 +11,7 @@ import { LocationPickerLeafletModule } from '@acpaas-ui-widgets/ngx-location-lea
     ],
     imports: [
         BrowserModule,
-        LocationPickerLeafletModule
+       LocationPickerLeafletModule
 
     ],
     providers: [],

@@ -9,8 +9,7 @@ Installation by npm or yarn.
 
 The widget comes with certain dependencies that have to be installed.
 
-npm install @acpaas-ui-widgets/ngx-location-picker @acpaas-ui/flyout 
-@acpaas-ui/flyout @acpaas-ui/leaflet @acpaas-ui/mask @acpaas-ui/selectable-list @angular/platform-server --save
+npm install @acpaas-ui-widgets/ngx-location-picker @acpaas-ui/flyout @acpaas-ui/flyout @acpaas-ui/leaflet @acpaas-ui/mask @acpaas-ui/selectable-list @angular/platform-server --save
 
 
 ## Usage
