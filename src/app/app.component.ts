@@ -14,6 +14,7 @@ export class AppComponent {
         // setTimeout(() => {
         //     this.triggerNoSubject = { 'lat': 51.21025180508141, 'lng': 4.474143732169805 };
         // }, 2000);
+
     }
 
     addressResolvedCallback = (location) => {

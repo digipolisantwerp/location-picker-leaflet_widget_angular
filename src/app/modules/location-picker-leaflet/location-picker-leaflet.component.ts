@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { LocationPickerValue } from '@acpaas-ui-widgets/ngx-location-picker';
 import { baseMapAntwerp, baseMapWorldGray, LeafletMap } from '@acpaas-ui/leaflet';
 import * as L from 'leaflet';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
-import { ALocation } from './ALocation.domain';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import './leafletMarkerFix';
+import { LocationItem } from './LocationItem.domain';
 
 @Component({
     selector: 'aui-location-picker-leaflet',
@@ -18,6 +17,7 @@ export class LocationPickerLeafletComponent implements OnInit {
 
     @Input() locationApiHost: string;
     @Input() coordinatesTriggerSubject: BehaviorSubject<{ lat: number, lng: number }>;
+
     @Input()
     set coordinatesTrigger(coordinates: { lat: number; lng: number }) {
         if (!coordinates || !coordinates.lat || !coordinates.lng || !this.leafletMap) {
@@ -30,13 +30,12 @@ export class LocationPickerLeafletComponent implements OnInit {
     @Input() locationPickerEndpoint: string = null;
     @Input() coordinatesEndpoint: string = null;
 
-    @Output() locationChange: EventEmitter<ALocation> = new EventEmitter<ALocation>();
+    @Output() locationChange: EventEmitter<LocationItem> = new EventEmitter<LocationItem>();
 
-    private locationPicker: LocationPickerValue;
+    private locationPicker: LocationItem;
     private defaultLocationPickerEndpoint = '/api/locations';
     private defaultCoordinatesEndpoint = '/api/coordinates';
     private marker: L.marker;
-    aLocation = new ALocation({});
 
     leafletMap: LeafletMap = new LeafletMap({
         zoom: LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM, // default zoom level
@@ -106,38 +105,25 @@ export class LocationPickerLeafletComponent implements OnInit {
         this.locationPickerLeafletService.getLocationFromCoordinates(
             (this.locationApiHost + (this.coordinatesEndpoint ? this.coordinatesEndpoint : this.defaultCoordinatesEndpoint)).toString(), coordinates)
             .then(location => {
-            this.mapResponseToALocation(location);
-            this.emitValue();
+                this.locationPicker = location;
+                this.emitValue(location);
 
-        }).catch(err => {
+            }).catch(err => {
             console.log(err);
         });
     };
-    emitValue = () => {
-        this.locationChange.emit(this.aLocation);
-    };
-    mapResponseToALocation = (location) => {
-
-        this.locationPicker = location;
-        this.aLocation.latLng = location.coordinates ? location.coordinates.latLng : { lat: undefined, lng: undefined };
-        this.aLocation.lambert = location.coordinates ? location.coordinates.lambert : { x: undefined, y: undefined };
-        this.aLocation.street = location.street;
-        this.aLocation.placeDescription = location.name;
-        this.aLocation.postalCode = location.postal;
-        this.aLocation.houseNumber = location.number;
-        this.aLocation.locationSubmitter = location.locationType;
-        this.aLocation.name = location.name;
+    emitValue = (location: LocationItem) => {
+        this.locationChange.emit(location);
     };
 
-    locationPickerValueChanged = (location: LocationPickerValue) => {
+    locationPickerValueChanged = (location: LocationItem) => {
         // Location picker valua has changed, which means there is a result from the server
         if (!location || !location.coordinates || !location.coordinates.latLng) {
             // centroid logic
             return;
         }
 
-        this.mapResponseToALocation(location);
-        this.emitValue();
+        this.emitValue(location);
         this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
 
     };

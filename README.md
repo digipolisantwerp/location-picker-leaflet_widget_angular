@@ -23,26 +23,16 @@ On desired component location:
 
 
 ###Optional component inputs
-* coordinatesTrigger =  BehaviorSubject({ lat: number, lng: number }); 
+* coordinatesTriggerSubject =  BehaviorSubject({ lat: number, lng: number }); 
 => can be used to trigger an external location change.
+* coordinatesTrigger = Object({ lat: number, lng: number })
+=> when set will retrieve location by coordinates
 
-###example:
-* locationPickerUrl= 'http://localhost:9999'
-* coordinatesTrigger = new BehaviorSubject({ lat: null, lng: null });
-
-                  
+* locationPickerEndpoint = string => when /api/location is not default endpoint.
+* coordinatesEndpoint = string => when /api/coordinates is not default endpoint.
                              
 ###Component outputs
-* addressResolvedCallback = function($event)
+* locationChange = function($event)
 
-Output will have following model properties:
-* latLng: {lat:number,lng:number};
-* lambert: {x:number,y:number};
-* placeDescription: string;
-* locationSubmitter: string;
-* houseNumber: number;
-* postalCode: string;
-* municipality: string;
-* country: string;
-* street: string;
-* city: string;
+Output will be an LocationItem model.
+
