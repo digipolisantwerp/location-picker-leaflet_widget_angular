@@ -5,9 +5,7 @@ import * as L from 'leaflet';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 import { ALocation } from './ALocation.domain';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import './leafletMarkerFix'
-
-
+import './leafletMarkerFix';
 
 @Component({
     selector: 'aui-location-picker-leaflet',
@@ -20,20 +18,24 @@ export class LocationPickerLeafletComponent implements OnInit {
 
     @Input() locationApiHost: string;
     @Input() coordinatesTriggerSubject: BehaviorSubject<{ lat: number, lng: number }>;
-    @Input('coordinatesTrigger')
     set coordinatesTrigger(coordinates: { lat: number; lng: number }) {
-        // this._coordinatesTrigger = coordinates;
-        console.log(coordinates)
         if (!coordinates || !coordinates.lat || !coordinates.lng || !this.leafletMap) {
             return;
         }
         this.getLocationFromCoordinates(coordinates);
         this.leafletMap.setView([coordinates.lat, coordinates.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
     }
+
+    @Input() locationPickerEndpoint: string = null;
+    @Input() coordinatesEndpoint: string = null;
+    @Input()
+
+
     @Output() locationChange: EventEmitter<ALocation> = new EventEmitter<ALocation>();
 
     private locationPicker: LocationPickerValue;
-    private locationPickerEndpoint = '/api/locations';
+    private defaultLocationPickerEndpoint = '/api/locations';
+    private defaultCoordinatesEndpoint = '/api/coordinates';
     private marker: L.marker;
     aLocation = new ALocation({});
 
@@ -47,10 +49,6 @@ export class LocationPickerLeafletComponent implements OnInit {
         onEditFeature: (feature) => {
         }
     });
-
-
-
-
 
     constructor(private locationPickerLeafletService: LocationPickerLeafletService) {
     }
@@ -106,7 +104,7 @@ export class LocationPickerLeafletComponent implements OnInit {
     }
 
     getLocationFromCoordinates = (coordinates) => {
-        this.locationPickerLeafletService.getLocationFromCoordinates(this.locationApiHost, coordinates).then(location => {
+        this.locationPickerLeafletService.getLocationFromCoordinates(this.locationApiHost + this.coordinatesEndpoint ? this.coordinatesEndpoint : this.defaultCoordinatesEndpoint, coordinates).then(location => {
             this.mapResponseToALocation(location);
             this.emitValue();
 
