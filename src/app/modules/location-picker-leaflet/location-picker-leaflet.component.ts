@@ -11,6 +11,7 @@ import { LocationItem } from './LocationItem.domain';
     templateUrl: './location-picker-leaflet.component.html',
     styleUrls: ['./location-picker-leaflet.component.css']
 })
+
 export class LocationPickerLeafletComponent implements OnInit {
 
     public static LEAFLET_DEFAULT_ZOOM = 16;
@@ -67,7 +68,7 @@ export class LocationPickerLeafletComponent implements OnInit {
             // Declare a marker with standard icon, widget can be expanded with custom icon support.
             this.marker = new L.marker(this.leafletMap.map.getCenter());
 
-            //Add marker to the leaflet.
+            // Add marker to the leaflet.
             this.marker.addTo(this.leafletMap.map);
 
             // Subscribe on the map move event. will trigger each time user moves the app.
@@ -124,7 +125,8 @@ export class LocationPickerLeafletComponent implements OnInit {
         }
 
         this.emitValue(location);
-        this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
+        this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng],
+                                        LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
 
     };
 
