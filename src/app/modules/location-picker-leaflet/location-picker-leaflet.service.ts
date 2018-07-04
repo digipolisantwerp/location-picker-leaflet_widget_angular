@@ -22,6 +22,8 @@ export class LocationPickerLeafletService {
                 if (response && response.error) {
                     return reject(response.error);
                 }
+            }, (err) => {
+                return reject(err);
             });
         });
     };

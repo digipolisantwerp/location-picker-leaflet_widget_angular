@@ -108,9 +108,9 @@ export class LocationPickerLeafletComponent implements OnInit {
             .then(location => {
                 this.locationPicker = location;
                 this.emitValue(location);
-
             }).catch(err => {
-            console.log(err);
+            this.locationPicker ? this.locationPicker.name = '' : console.log(err);
+
         });
     };
     emitValue = (location: LocationItem) => {
@@ -126,7 +126,7 @@ export class LocationPickerLeafletComponent implements OnInit {
 
         this.emitValue(location);
         this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng],
-                                        LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
+            LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
 
     };
 
