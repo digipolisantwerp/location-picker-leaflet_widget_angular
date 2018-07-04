@@ -11,12 +11,25 @@ The widget comes with certain dependencies that have to be installed.
 
 npm install @acpaas-ui-widgets/ngx-location-picker @acpaas-ui/flyout @acpaas-ui/flyout @acpaas-ui/leaflet @acpaas-ui/mask @acpaas-ui/selectable-list @angular/platform-server --save
 
+## Running the example 
+Steps to run the example:
+* navigate to the example folder
+* npm install 
+* npm run start
+
+## Building the component
+steps for building the component:
+* navigate to root folder
+* npm install
+* install peer dependencies, manually or by npm-install-peers package.
+* npm run start 
+
 
 ## Usage
 Insert LocationPickerLeafletModule in your app.module.ts.
 
 On desired component location: 
-<aui-location-leaflet-smart-widget></aui-location-leaflet-smart-widget>
+<aui-location-picker-leaflet></aui-location-picker-leaflet>
 
 ###Required component inputs
 * locationPickerUrl= string => points to the location-picker backend host. 
