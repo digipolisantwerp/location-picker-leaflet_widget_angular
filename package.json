@@ -5,7 +5,7 @@
     "name": "Jeroen Brock",
     "email": "jeroen.brock@endare.com"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -18,7 +18,7 @@
   },
   "private": false,
   "peerDependencies": {
-    "@acpaas-ui-widgets/ngx-location-picker": "^1.0.1",
+    "@acpaas-ui-widgets/ngx-location-picker": "^1.0.0",
     "@acpaas-ui/flyout": "^4.0.2",
     "@acpaas-ui/leaflet": "^0.1.1",
     "@acpaas-ui/mask": "^4.0.0",
