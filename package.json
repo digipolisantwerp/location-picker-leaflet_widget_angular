@@ -5,7 +5,7 @@
     "name": "Jeroen Brock",
     "email": "jeroen.brock@endare.com"
   },
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
