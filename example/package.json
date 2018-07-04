@@ -12,7 +12,7 @@
   "private": true,
   "dependencies": {
     "@acpaas-ui-widgets/ngx-location-picker": "^1.0.0",
-    "@acpaas-ui-widgets/ngx-location-picker-leaflet": "file:../acpaas-ui-widgets-ngx-location-picker-leaflet-0.0.5.tgz",
+    "@acpaas-ui-widgets/ngx-location-picker-leaflet": "file:../acpaas-ui-widgets-ngx-location-picker-leaflet-0.0.6.tgz",
     "@acpaas-ui/flyout": "^4.0.3",
     "@acpaas-ui/leaflet": "^0.1.1",
     "@acpaas-ui/mask": "^4.0.0",
