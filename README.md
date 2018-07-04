@@ -9,7 +9,15 @@ Installation by npm or yarn.
 
 The widget comes with certain dependencies that have to be installed.
 
-npm install @acpaas-ui-widgets/ngx-location-picker @acpaas-ui/flyout @acpaas-ui/flyout @acpaas-ui/leaflet @acpaas-ui/mask @acpaas-ui/selectable-list @angular/platform-server --save
+npm install   
+@acpaas-ui-widgets/ngx-location-picker @acpaas-ui/flyout   
+@acpaas-ui/flyout @acpaas-ui/leaflet @acpaas-ui/mask  
+@acpaas-ui/selectable-list @angular/platform-server --save
+
+## Backend service
+The widget requires a backend service to retrieve data.  
+Please consult following repo to setup your backend.  
+https://github.com/digipolisantwerp/location-picker_widget_angular
 
 ## Running the example 
 Steps to run the example:
@@ -32,17 +40,20 @@ On desired component location:
 <aui-location-picker-leaflet></aui-location-picker-leaflet>
 
 ###Required component inputs
-* locationPickerUrl= string => points to the location-picker backend host. 
+* locationPickerUrl= string  
+ => points to the location-picker backend host. 
 
 
 ###Optional component inputs
-* coordinatesTriggerSubject =  BehaviorSubject({ lat: number, lng: number }); 
+* coordinatesTriggerSubject =  BehaviorSubject({ lat: number, lng: number });   
 => can be used to trigger an external location change.
-* coordinatesTrigger = Object({ lat: number, lng: number })
+* coordinatesTrigger = Object({ lat: number, lng: number })  
 => when set will retrieve location by coordinates
 
-* locationPickerEndpoint = string => when /api/location is not default endpoint.
-* coordinatesEndpoint = string => when /api/coordinates is not default endpoint.
+* locationPickerEndpoint = string   
+=> when /api/location is not default endpoint.
+* coordinatesEndpoint = string   
+=> when /api/coordinates is not default endpoint.
                              
 ###Component outputs
 * locationChange = function($event)
