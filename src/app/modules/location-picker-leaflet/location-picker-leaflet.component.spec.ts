@@ -38,7 +38,7 @@ describe('LocationPickerLeafletComponent', () => {
         fixture = TestBed.createComponent(LocationPickerLeafletComponent);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
-        component.coordinatesTrigger = new BehaviorSubject({ lat: null, lng: null });
+        component.coordinatesTriggerSubject = new BehaviorSubject({ lat: null, lng: null });
         component.locationApiHost = 'https://localhost';
         service = TestBed.get(LocationPickerLeafletService);
     });
@@ -75,26 +75,26 @@ describe('LocationPickerLeafletComponent', () => {
     });
 
     it('should emit when emit is called', () => {
-        spyOn(component.addressResolvedCallback, 'emit');
+        spyOn(component.locationChange, 'emit');
         component.emitValue();
-        expect(component.addressResolvedCallback.emit).toHaveBeenCalled();
+        expect(component.locationChange.emit).toHaveBeenCalled();
     });
     it('should emit when locationpicker value changed', () => {
-        spyOn(component.addressResolvedCallback, 'emit');
+        spyOn(component.locationChange, 'emit');
         component.locationPickerValueChanged(dummyLocation);
-        expect(component.addressResolvedCallback.emit).toHaveBeenCalled();
+        expect(component.locationChange.emit).toHaveBeenCalled();
     });
     it('should not emit when locationpicker value changed with no coordinates', () => {
-        spyOn(component.addressResolvedCallback, 'emit');
+        spyOn(component.locationChange, 'emit');
         dummyLocation.coordinates = null;
         component.locationPickerValueChanged(dummyLocation);
-        expect(component.addressResolvedCallback.emit).toHaveBeenCalledTimes(0);
+        expect(component.locationChange.emit).toHaveBeenCalledTimes(0);
     });
 
     it('should receive location from server when coordinatesTrigger changes.', () => {
         spyOn(component, 'getLocationFromCoordinates');
         component.ngOnInit();
-        component.coordinatesTrigger.next({ lat: 51.21025180508141, lng: 4.474143732169805 });
+        component.coordinatesTriggerSubject.next({ lat: 51.21025180508141, lng: 4.474143732169805 });
         expect(component.getLocationFromCoordinates).toHaveBeenCalled();
     });
 });
