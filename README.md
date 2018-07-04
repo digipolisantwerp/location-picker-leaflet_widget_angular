@@ -41,12 +41,14 @@ Insert LocationPickerLeafletModule in your app.module.ts.
 On desired component location: 
 <aui-location-picker-leaflet></aui-location-picker-leaflet>
 
-###Required component inputs
+###Required component inputs 
+
 * locationPickerUrl= string  
  => points to the location-picker backend host. 
 
 
-###Optional component inputs
+###Optional component inputs 
+
 * coordinatesTriggerSubject =  BehaviorSubject({ lat: number, lng: number });   
 => can be used to trigger an external location change.
 * coordinatesTrigger = Object({ lat: number, lng: number })  
@@ -57,7 +59,8 @@ On desired component location:
 * coordinatesEndpoint = string   
 => when /api/coordinates is not default endpoint.
                              
-###Component outputs
+###Component outputs 
+
 * locationChange = function($event)
 
 Output will be an LocationItem model.
