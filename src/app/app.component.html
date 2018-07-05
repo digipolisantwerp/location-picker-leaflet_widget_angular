@@ -3,4 +3,5 @@
                                    [coordinatesTriggerSubject]="trigger"
                                    [locationApiHost]=url
                                    (locationChange)="addressResolvedCallback($event)"
+                             (mapLocationChange)="mapChangeEvent($event)"
 ></aui-location-picker-leaflet>

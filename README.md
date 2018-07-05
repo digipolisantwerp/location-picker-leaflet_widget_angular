@@ -65,6 +65,10 @@ On desired component location:
 
 Output will be an LocationItem model.
 
+* mapLocationChange = function($event)  
+
+Will emit a [number,number] object with the marker position each time the map moves. 
+
 ## Contributing
 
 We welcome your bug reports and pull requests.

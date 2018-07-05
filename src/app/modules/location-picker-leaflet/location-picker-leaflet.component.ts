@@ -32,6 +32,7 @@ export class LocationPickerLeafletComponent implements OnInit {
     @Input() coordinatesEndpoint: string = null;
 
     @Output() locationChange: EventEmitter<LocationItem> = new EventEmitter<LocationItem>();
+    @Output() mapLocationChange: EventEmitter<[number, number]> = new EventEmitter<[number, number]>();
 
     private locationPicker: LocationItem;
     private defaultLocationPickerEndpoint = '/api/locations';
@@ -74,8 +75,11 @@ export class LocationPickerLeafletComponent implements OnInit {
             // Subscribe on the map move event. will trigger each time user moves the app.
             this.leafletMap.map.on('move', () => {
 
-                // when the map moves, marker should be set at the center
+                // When the map moves, marker should be set at the center
                 this.marker.setLatLng(this.leafletMap.map.getCenter());
+
+                // Emit the location of the leaflet
+                this.mapLocationChange.emit(this.leafletMap.map.getCenter());
 
             });
 
