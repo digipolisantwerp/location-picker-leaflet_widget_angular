@@ -5,7 +5,7 @@
     "name": "Jeroen Brock",
     "email": "jeroen.brock@endare.com"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -36,7 +36,8 @@
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
     "@angular/cli": "^1.7.4",
     "@angular/compiler-cli": "^5.2.0",
