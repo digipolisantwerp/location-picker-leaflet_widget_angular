@@ -52,7 +52,6 @@ export class LocationPickerLeafletComponent implements OnInit {
 
     constructor(private locationPickerLeafletService: LocationPickerLeafletService) {
     }
-
     ngOnInit() {
 
         // Checks  the required attributes
@@ -61,6 +60,8 @@ export class LocationPickerLeafletComponent implements OnInit {
         // Layer can only be drawn on the leaflet after it has been initted.
         this.leafletMap.onInit.subscribe(() => {
 
+            this.leafletMap.map.options.minZoom = 12;
+            this.leafletMap.map.options.maxZoom = 19;
 
             // Adding the layer to the leaflet.
             this.leafletMap.addTileLayer(baseMapWorldGray);
@@ -89,7 +90,10 @@ export class LocationPickerLeafletComponent implements OnInit {
 
                 // Calling the server to get location from coordinates.
                 this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
+            });
 
+            this.leafletMap.map.on('locationfound', (location) => {
+                this.getLocationFromCoordinates(location.latlng);
             });
 
         });
@@ -103,7 +107,6 @@ export class LocationPickerLeafletComponent implements OnInit {
                 this.leafletMap.setView([coordinates.lat, coordinates.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
             });
         }
-
     }
 
     getLocationFromCoordinates = (coordinates) => {
