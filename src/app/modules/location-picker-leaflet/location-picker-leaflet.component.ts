@@ -18,6 +18,7 @@ export class LocationPickerLeafletComponent implements OnInit {
 
     @Input() locationApiHost: string;
     @Input() coordinatesTriggerSubject: BehaviorSubject<{ lat: number, lng: number }>;
+    @Input() inputClearVisible = false;
 
     @Input()
     set coordinatesTrigger(coordinates: { lat: number; lng: number }) {
@@ -137,7 +138,7 @@ export class LocationPickerLeafletComponent implements OnInit {
 
     };
     clear = () => {
-        this.locationPicker = { id: '', name: '' , locationType: null};
+        this.locationPicker = { id: '', name: '', locationType: null };
     };
 
 }

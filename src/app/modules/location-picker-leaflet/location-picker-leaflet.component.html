@@ -6,7 +6,7 @@
 
 
 </aui-location-picker>
-<div (click)="clear()" class="remove-input">
+<div *ngIf="inputClearVisible" (click)="clear()" class="remove-input">
     <i class="fa fa-close"></i>
 </div>
 <aui-leaflet [leafletMap]="leafletMap">
