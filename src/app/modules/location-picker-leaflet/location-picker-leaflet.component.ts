@@ -52,6 +52,7 @@ export class LocationPickerLeafletComponent implements OnInit {
 
     constructor(private locationPickerLeafletService: LocationPickerLeafletService) {
     }
+
     ngOnInit() {
 
         // Checks  the required attributes
@@ -81,7 +82,6 @@ export class LocationPickerLeafletComponent implements OnInit {
 
                 // Emit the location of the leaflet
                 this.mapLocationChange.emit(this.leafletMap.map.getCenter());
-
             });
 
             // Subscribe to the dragend event. This will only trigger when the user stopped moving the map.
@@ -135,6 +135,9 @@ export class LocationPickerLeafletComponent implements OnInit {
         this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng],
             LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
 
+    };
+    clear = () => {
+        this.locationPicker = { id: '', name: '' , locationType: null};
     };
 
 }

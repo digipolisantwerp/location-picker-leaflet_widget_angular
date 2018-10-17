@@ -1,9 +1,14 @@
 <aui-location-picker
         url="{{(locationApiHost+ (locationPickerEndpoint ? locationPickerEndpoint: defaultLocationPickerEndpoint)).toString()}}"
         [(value)]="locationPicker"
-        (valueChange)="locationPickerValueChanged(locationPicker)">
-</aui-location-picker>
+        (valueChange)="locationPickerValueChanged(locationPicker)"
+>
 
+
+</aui-location-picker>
+<div (click)="clear()" class="remove-input">
+    <i class="fa fa-close"></i>
+</div>
 <aui-leaflet [leafletMap]="leafletMap">
     <div controls bottom left>
         <aui-leaflet-zoom-control></aui-leaflet-zoom-control>
