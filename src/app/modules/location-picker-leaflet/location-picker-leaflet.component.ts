@@ -113,12 +113,11 @@ export class LocationPickerLeafletComponent implements OnInit {
     getLocationFromCoordinates = (coordinates) => {
         this.locationPickerLeafletService.getLocationFromCoordinates(
             (this.locationApiHost + (this.coordinatesEndpoint ? this.coordinatesEndpoint : this.defaultCoordinatesEndpoint)).toString(), coordinates)
-            .then(location => {
+            .then((location: LocationItem) => {
                 this.locationPicker = location;
                 this.emitValue(location);
             }).catch(err => {
             this.locationPicker ? this.locationPicker.name = '' : console.log(err);
-
         });
     };
     emitValue = (location: LocationItem) => {
@@ -129,7 +128,12 @@ export class LocationPickerLeafletComponent implements OnInit {
         // Location picker valua has changed, which means there is a result from the server
         if (!location || !location.coordinates || !location.coordinates.latLng) {
             // centroid logic
-            return;
+            if (!location.polygons || !location.polygons.length) {
+                return;
+            }
+            const arr = location.polygons[0].map(coordinate => [coordinate.lat, coordinate.lng]);
+            const centerCoordinates = L.polygon(arr, {}).getBounds().getCenter();
+            location.coordinates = { latLng: centerCoordinates };
         }
 
         this.emitValue(location);
