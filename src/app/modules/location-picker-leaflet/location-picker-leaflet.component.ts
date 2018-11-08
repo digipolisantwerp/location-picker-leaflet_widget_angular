@@ -75,6 +75,9 @@ export class LocationPickerLeafletComponent implements OnInit {
             // Add marker to the leaflet.
             this.marker.addTo(this.leafletMap.map);
 
+            // Get the initial location
+            this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
+
             // Subscribe on the map move event. will trigger each time user moves the app.
             this.leafletMap.map.on('move', () => {
 
@@ -110,7 +113,7 @@ export class LocationPickerLeafletComponent implements OnInit {
         }
     }
 
-    getLocationFromCoordinates = (coordinates) => {
+    getLocationFromCoordinates = (coordinates: { lat: number, lng: number }) => {
         this.locationPickerLeafletService.getLocationFromCoordinates(
             (this.locationApiHost + (this.coordinatesEndpoint ? this.coordinatesEndpoint : this.defaultCoordinatesEndpoint)).toString(), coordinates)
             .then((location: LocationItem) => {
