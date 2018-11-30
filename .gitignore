@@ -2,9 +2,10 @@
 
 # compiled output
 /dist
-/dist-server
+/dist-ghpages
 /tmp
 /out-tsc
+dist.tgz
 
 # dependencies
 /node_modules
@@ -31,7 +32,6 @@
 /coverage
 /libpeerconnection.log
 npm-debug.log
-yarn-error.log
 testem.log
 /typings
 
@@ -42,5 +42,3 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-
-.ng_pkg_build/

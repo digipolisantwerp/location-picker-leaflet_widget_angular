@@ -1,11 +1,11 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "location-picker-smart-widget"
+    "name": "location-picker-leaflet-smart-widget"
   },
   "apps": [
     {
-      "root": "src",
+      "root": "example",
       "outDir": "dist",
       "assets": [
         "assets",
@@ -19,15 +19,13 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css",
-        "../node_modules/leaflet/dist/leaflet.css",
-        "../node_modules/leaflet-draw/dist/leaflet.draw.css"
+        "styles.scss"
       ],
       "scripts": [],
-      "environmentSource": "environments/environment.ts",
+      "environmentSource": "config/environment.ts",
       "environments": {
-        "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
+        "dev": "config/environment.ts",
+        "prod": "config/environment.prod.ts"
       }
     }
   ],
@@ -38,15 +36,11 @@
   },
   "lint": [
     {
-      "project": "src/tsconfig.app.json",
+      "project": "example/tsconfig.app.json",
       "exclude": "**/node_modules/**"
     },
     {
-      "project": "src/tsconfig.spec.json",
-      "exclude": "**/node_modules/**"
-    },
-    {
-      "project": "e2e/tsconfig.e2e.json",
+      "project": "example/tsconfig.spec.json",
       "exclude": "**/node_modules/**"
     }
   ],
@@ -56,7 +50,10 @@
     }
   },
   "defaults": {
-    "styleExt": "css",
+    "styleExt": "scss",
+    "class": {
+      "spec": false
+    },
     "component": {}
   }
 }
