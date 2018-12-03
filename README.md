@@ -15,7 +15,7 @@ Copy the .npmrc file from this repo to your local repo to set up the link to nex
 Then install (you will need to be connected to the Digipolis network):
 
 ```sh
-> npm install @acpaas-ui-widgets/ngx-location-picker
+> npm install @acpaas-ui-widgets/ngx-location-picker-leaflet
 ```
 
 You may also need to install peer dependencies:

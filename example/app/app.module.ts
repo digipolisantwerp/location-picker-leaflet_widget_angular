@@ -1,19 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { ExampleModule } from '../../src';
-
 import { AppComponent } from './app.component';
+import { LocationPickerLeafletModule } from '../../src';
+
 
 @NgModule({
   imports: [
     BrowserModule,
-    ExampleModule,
+    LocationPickerLeafletModule,
   ],
+  exports: [],
   declarations: [
     AppComponent,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+}
