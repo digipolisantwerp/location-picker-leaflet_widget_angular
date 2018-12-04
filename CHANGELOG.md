@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
 <!--
 "### Added" for new features.
 "### Changed" for changes in existing functionality.
@@ -10,6 +12,11 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
+
+## [2.0.0] - 2018-12-04
+
+### Changed
+- [BREAKING] Upgraded the widget to work with Angular 6+
 
 ## [1.2.3] - 2018-12-03
 
