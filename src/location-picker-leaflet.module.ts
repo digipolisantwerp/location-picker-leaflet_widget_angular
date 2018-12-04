@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LeafletModule } from '@acpaas-ui/leaflet';
+import { LeafletModule } from '@acpaas-ui/ngx-components/map';
 import { LocationPickerModule } from '@acpaas-ui-widgets/ngx-location-picker';
 import { HttpClientModule } from '@angular/common/http';
 

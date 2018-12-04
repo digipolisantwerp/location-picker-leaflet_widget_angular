@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LocationPickerLeafletComponent } from './location-picker-leaflet.component';
-import { LeafletModule } from '@acpaas-ui/leaflet';
+import { LeafletModule } from '@acpaas-ui/ngx-components/map';
 import { LocationPickerModule } from '@acpaas-ui-widgets/ngx-location-picker';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
