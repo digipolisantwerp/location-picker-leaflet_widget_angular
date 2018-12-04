@@ -73,7 +73,7 @@ If possible, do provide meaningful and clean commit messages. A [good commit mes
 > Only the ACPaaS UI team publishes new packages. [Contact us](https://acpaas-ui.digipolis.be/contact) if you need a new release published.
 
 Follow these steps to publish a new version of the package.
-You must be a member of the @acpaas-ui-widgets organization on GitHub.
+You must be a member of the @acpaas-ui-widgets organization on NPM.
 
 1. Increment the version in package.json
 2. Log in to the npmjs registry
