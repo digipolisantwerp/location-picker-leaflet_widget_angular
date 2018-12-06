@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { baseMapAntwerp, baseMapWorldGray, LeafletMap } from '@acpaas-ui/leaflet';
+import { baseMapAntwerp, baseMapWorldGray, LeafletMap } from '@acpaas-ui/ngx-components/map';
 import * as L from 'leaflet';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
