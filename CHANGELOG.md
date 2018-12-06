@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
-## [2.0.0] - 2018-12-04
+## [2.0.0] - 2018-12-06
 
 ### Changed
 - [BREAKING] Upgraded the widget to work with Angular 6+
