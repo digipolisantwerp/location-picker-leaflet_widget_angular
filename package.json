@@ -5,7 +5,7 @@
     "name": "Jeroen Brock",
     "email": "jeroen.brock@endare.com"
   },
-  "version": "2.0.0",
+  "version": "2.1.0",
   "license": "MIT",
   "main": "src/index.ts",
   "scripts": {

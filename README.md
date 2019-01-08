@@ -79,6 +79,7 @@ Every value in the backing list must have a unique id.
 - **coordinatesTrigger**: (Object({ lat: number, lng: number })) when set will retrieve location by coordinates
 - **locationPickerEndpoint**: (string) when /api/location is not default endpoint
 - **coordinatesEndpoint**: (string) when /api/coordinates is not default endpoint
+- **useExternalOffset**: (boolean) wether or not to use the default location as offset
 
 ### Events
 
