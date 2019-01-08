@@ -9,7 +9,7 @@ import { LocationItem } from './LocationItem.domain';
 @Component({
     selector: 'aui-location-picker-leaflet',
     templateUrl: './location-picker-leaflet.component.html',
-    styleUrls: ['./location-picker-leaflet.component.scss'],
+    styleUrls: ['./location-picker-leaflet.component.scss']
 })
 
 export class LocationPickerLeafletComponent implements OnInit {
@@ -19,7 +19,8 @@ export class LocationPickerLeafletComponent implements OnInit {
     @Input() locationApiHost: string;
     @Input() coordinatesTriggerSubject: BehaviorSubject<{ lat: number, lng: number }>;
     @Input() inputClearVisible = false;
-    @Input() useExternalOffset =false;
+    @Input() useExternalOffset = false;
+
     @Input()
     set coordinatesTrigger(coordinates: { lat: number; lng: number }) {
         if (!coordinates || !coordinates.lat || !coordinates.lng || !this.leafletMap) {
@@ -58,7 +59,7 @@ export class LocationPickerLeafletComponent implements OnInit {
 
         // Checks  the required attributes
         if (!this.locationApiHost) {
-          throw new Error('Attribute \'locationApiHost\' is required on aui-location-leaflet-smart-widget element.');
+            throw new Error('Attribute \'locationApiHost\' is required on aui-location-leaflet-smart-widget element.');
         }
 
         // Layer can only be drawn on the leaflet after it has been initted.
@@ -78,7 +79,9 @@ export class LocationPickerLeafletComponent implements OnInit {
             this.marker.addTo(this.leafletMap.map);
 
             // Get the initial location if there is no external offset
-            if(!this.useExternalOffset) this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
+            if (!this.useExternalOffset) {
+                this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
+            }
 
             // Subscribe on the map move event. will trigger each time user moves the app.
             this.leafletMap.map.on('move', () => {
@@ -118,7 +121,7 @@ export class LocationPickerLeafletComponent implements OnInit {
     getLocationFromCoordinates = (coordinates: { lat: number, lng: number }) => {
         this.locationPickerLeafletService.getLocationFromCoordinates(
             (this.locationApiHost + (this.coordinatesEndpoint ? this.coordinatesEndpoint : this.defaultCoordinatesEndpoint))
-            .toString(), coordinates)
+                .toString(), coordinates)
             .then((location: LocationItem) => {
                 this.locationPicker = location;
                 this.emitValue(location);

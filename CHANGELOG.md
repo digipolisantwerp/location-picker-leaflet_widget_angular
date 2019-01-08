@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
+## [2.0.1] - 2019-01-08
+- Option to disable the default location offset
 
 ## [2.0.0] - 2018-12-06
 
