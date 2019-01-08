@@ -19,7 +19,7 @@ export class LocationPickerLeafletComponent implements OnInit {
     @Input() locationApiHost: string;
     @Input() coordinatesTriggerSubject: BehaviorSubject<{ lat: number, lng: number }>;
     @Input() inputClearVisible = false;
-
+    @Input() useExternalOffset =false;
     @Input()
     set coordinatesTrigger(coordinates: { lat: number; lng: number }) {
         if (!coordinates || !coordinates.lat || !coordinates.lng || !this.leafletMap) {
@@ -77,8 +77,8 @@ export class LocationPickerLeafletComponent implements OnInit {
             // Add marker to the leaflet.
             this.marker.addTo(this.leafletMap.map);
 
-            // Get the initial location
-            this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
+            // Get the initial location if there is no external offset
+            if(!this.useExternalOffset) this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
 
             // Subscribe on the map move event. will trigger each time user moves the app.
             this.leafletMap.map.on('move', () => {
