@@ -128,10 +128,10 @@ export class LocationPickerLeafletComponent implements OnInit {
             }).catch(err => {
             this.locationPicker ? this.locationPicker.name = '' : console.log(err);
         });
-    };
+    }
     emitValue = (location: LocationItem) => {
         this.locationChange.emit(location);
-    };
+    }
 
     locationPickerValueChanged = (location: LocationItem) => {
         // Location picker valua has changed, which means there is a result from the server
@@ -148,8 +148,8 @@ export class LocationPickerLeafletComponent implements OnInit {
         this.emitValue(location);
         this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng],
             LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
-    };
+    }
     clear = () => {
         this.locationPicker = { id: '', name: '', locationType: null };
-    };
+    }
 }
