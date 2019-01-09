@@ -84,7 +84,7 @@ Optional attributes:
 - **coordinatesTrigger**: (Object({ lat: number, lng: number })) when set will retrieve location by coordinates
 - **locationPickerEndpoint**: (string) when /api/location is not default endpoint
 - **coordinatesEndpoint**: (string) when /api/coordinates is not default endpoint
-
+- **useExternalOffset**: (boolean) whether or not to use the default location as offset
 Events:
 
 - **locationChange**: locationItem model that is triggered when the current value is changed (or cleared)

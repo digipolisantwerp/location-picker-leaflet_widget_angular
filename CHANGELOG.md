@@ -11,6 +11,9 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [1.3.0] - 2019-1-9
+- Option to disable the default location offset.
+
 ## [1.2.3] - 2018-12-03
 
 ### Fixed
@@ -64,7 +67,7 @@ All notable changes to this project will be documented in this file.
 - Initial release.
 
 [Unreleased]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v1.2.3....HEAD
-
+[1.3.0]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v1.2.3...v1.3.0
 [1.2.3]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v1.2.0...v1.2.1
