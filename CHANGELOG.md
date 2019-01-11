@@ -17,7 +17,6 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Added option to disable the default location offset.
-- Updated a development package for security reasons.
 
 ## [2.1.0] - 2019-01-08 [BORKED]
 
