@@ -32,16 +32,19 @@ import { LocationPickerLeafletModule } from '@acpaas-ui-widgets/ngx-location-pic
 })
 ```
 
-In the index.html, include the core branding stylesheet:
+In the `index.html`, include the core branding stylesheet:
 
 ```html
 <link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/3.0.3/main.min.css">
 ```
 
-> For projects that are still using Angular 5, we are [maintaining a v1 branch](https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/tree/v1), which will still receive bug fixes if needed.
+Add the leaflet CSS styles to the `angular.json` file.
 
-```sh
-> npm install @acpaas-ui-widgets/ngx-location-picker-leaflet"<2.0.0"
+```css
+"styles": [
+  "node_modules/leaflet/dist/leaflet.css",
+  "node_modules/leaflet-draw/dist/leaflet.draw.css"
+]
 ```
 
 ### In your template:
@@ -105,6 +108,14 @@ The back-end service implements the following protocol:
 Browse to [localhost:4200](http://localhost:4200)
 
 To use this widget, you will also need to run [the backing service](https://github.com/digipolisantwerp/location-picker_service_nodejs).
+
+## Support
+
+> For projects that are still using Angular 5, we are [maintaining a v1 branch](https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/tree/v1), which will still receive bug fixes if needed.
+
+```sh
+> npm install @acpaas-ui-widgets/ngx-location-picker-leaflet"<2.0.0"
+```
 
 ## Contributing
 
