@@ -20,6 +20,9 @@ export class LocationPickerLeafletComponent implements OnInit {
     @Input() coordinatesTriggerSubject: BehaviorSubject<{ lat: number, lng: number }>;
     @Input() inputClearVisible = false;
     @Input() useExternalOffset = false;
+    @Input() externalOffset = [51.3606175839458, 4.31237449384836];
+    // @Input() externalOffset = [];
+    @Input() showDefaultAddress = true;
 
     @Input()
     set coordinatesTrigger(coordinates: { lat: number; lng: number }) {
@@ -38,12 +41,14 @@ export class LocationPickerLeafletComponent implements OnInit {
 
     public locationPicker: LocationItem;
     public defaultLocationPickerEndpoint = '/api/locations';
+    private defaultCoordinates = [51.215, 4.425]; // default center point
     private defaultCoordinatesEndpoint = '/api/coordinates';
     private marker: L.marker;
+    private getCoordinates = this.externalOffset.length <= 1 ? this.defaultCoordinates : this.externalOffset;
 
     leafletMap: LeafletMap = new LeafletMap({
         zoom: LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM, // default zoom level
-        center: [51.215, 4.425], // default center point
+        center: this.getCoordinates,
         onAddPolygon: (layer) => {
         },
         onAddLine: (layer) => {
@@ -79,9 +84,7 @@ export class LocationPickerLeafletComponent implements OnInit {
             this.marker.addTo(this.leafletMap.map);
 
             // Get the initial location if there is no external offset
-            if (!this.useExternalOffset) {
-                this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
-            }
+            this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
 
             // Subscribe on the map move event. will trigger each time user moves the app.
             this.leafletMap.map.on('move', () => {
@@ -123,12 +126,15 @@ export class LocationPickerLeafletComponent implements OnInit {
             (this.locationApiHost + (this.coordinatesEndpoint ? this.coordinatesEndpoint : this.defaultCoordinatesEndpoint))
                 .toString(), coordinates)
             .then((location: LocationItem) => {
+              if (this.showDefaultAddress) {
                 this.locationPicker = location;
+              }
                 this.emitValue(location);
             }).catch(err => {
             this.locationPicker ? this.locationPicker.name = '' : console.log(err);
         });
     }
+
     emitValue = (location: LocationItem) => {
         this.locationChange.emit(location);
     }
