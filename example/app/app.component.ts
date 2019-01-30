@@ -12,11 +12,14 @@ export class AppComponent {
   url = 'http://localhost:9999';
   trigger: BehaviorSubject<{ lat: number, lng: number }> = new BehaviorSubject({ lat: null, lng: null });
   triggerNoSubject: { lat: number, lng: number };
+  public newCoordinates = [];
+  public showDefaultAddress = false;
 
   constructor() {
-    // setTimeout(() => {
-    //     this.triggerNoSubject = { 'lat': 51.21025180508141, 'lng': 4.474143732169805 };
-    // }, 2000);
+    setTimeout(() => {
+        this.newCoordinates = [51.19506875061893, 4.381795173474985];
+        this.showDefaultAddress = true;
+    }, 6000);
   }
 
   addressResolvedCallback = (location) => {
