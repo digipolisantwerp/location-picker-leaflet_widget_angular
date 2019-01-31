@@ -44,7 +44,8 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     if (this.leafletMap) {
       this.getLocationFromCoordinates(this.defaultCoordinates);
       this.leafletMap.setView(
-        [this.defaultCoordinates.lat, this.defaultCoordinates.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
+        [this.defaultCoordinates.lat, this.defaultCoordinates.lng],
+        LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
     }
   }
 
@@ -128,7 +129,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   }
 
   locationPickerValueChanged = (location: LocationItem) => {
-    // Location picker valua has changed, which means there is a result from the server
+    // Location picker value has changed, which means there is a result from the server
     if (!location || !location.coordinates || !location.coordinates.latLng) {
       // centroid logic
       if (!location.polygons || !location.polygons.length) {
