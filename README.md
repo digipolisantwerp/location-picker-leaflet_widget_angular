@@ -53,7 +53,7 @@ Add the leaflet CSS styles to the `angular.json` file.
 <aui-location-picker-leaflet class="widget"
     [externalOffset]="newCoordinates"
     [showDefaultAddress]="showDefaultAddress"
-    [locationApiHost]="http://localhost:9999/api/locations"
+    [locationApiHost]="http://localhost:9999"
     (locationChange)="addressResolvedCallback($event)"
 ></aui-location-picker-leaflet>
 ```
@@ -77,10 +77,10 @@ Every value in the backing list must have a unique id.
 
 ### Supported attributes
 
-- **locationPickerUrl**: (string) required URL of the back-end service feeding this widget
-- **externalOffset**: (Object({ lat: number, lng: number })) when set will retrieve location by coordinates
-- **locationPickerEndpoint**: (string) when /api/location is not default endpoint
 - **coordinatesEndpoint**: (string) when /api/coordinates is not default endpoint
+- **locationPickerUrl**: (string) required URL of the back-end service feeding this widget
+- **locationPickerEndpoint**: (string) when /api/location is not default endpoint
+- **externalOffset**: (Object({ lat: number, lng: number })) when set will retrieve location by coordinates
 - **showDefaultAddress**: (boolean) wether or not to show the default address in the input field
 
 ### Events

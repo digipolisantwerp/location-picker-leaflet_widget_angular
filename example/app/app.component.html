@@ -2,12 +2,11 @@
   <h1>Leaflet Location Picker</h1>
 </header>
 <div class="u-container">
-    <p>Picked location:</p>
-    <aui-location-picker-leaflet
-      class="widget"
-      [externalOffset]="newCoordinates"
-      [showDefaultAddress]="showDefaultAddress"
-      [locationApiHost]=url
-      (locationChange)="addressResolvedCallback($event)">
-    </aui-location-picker-leaflet>
+  <p>Picked location:</p>
+  <aui-location-picker-leaflet class="widget"
+    [externalOffset]="newCoordinates"
+    [showDefaultAddress]="showDefaultAddress"
+    [locationApiHost]=url
+    (locationChange)="addressResolvedCallback($event)">
+  </aui-location-picker-leaflet>
 </div>

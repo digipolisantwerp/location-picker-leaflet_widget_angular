@@ -17,8 +17,8 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
   @Input() locationApiHost: string;
   @Input() inputClearVisible = false;
-  @Input() externalOffset = [];
-  @Input() showDefaultAddress = true;
+  @Input() externalOffset = { };
+  @Input() showDefaultAddress = false;
 
   @Input() locationPickerEndpoint: string = null;
   @Input() coordinatesEndpoint: string = null;
@@ -29,7 +29,8 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   public locationPicker: LocationItem;
   public defaultLocationPickerEndpoint = '/api/locations';
   public leafletMap: LeafletMap;
-  private defaultCoordinates = [51.215, 4.425]; // default center point
+
+  private defaultCoordinates = { lat: 51.215, lng: 4.425 }; // default center point
   private defaultCoordinatesEndpoint = '/api/coordinates';
   private marker: L.marker;
 
@@ -38,13 +39,12 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     const coordinatesChanged: SimpleChange = changes.externalOffset;
-    this.defaultCoordinates = coordinatesChanged && coordinatesChanged.currentValue.length > 0 ?
+    this.defaultCoordinates = coordinatesChanged && this.validCoordinates(coordinatesChanged.currentValue) ?
     coordinatesChanged.currentValue : this.defaultCoordinates;
     if (this.leafletMap) {
-      this.getLocationFromCoordinates({ lat: this.defaultCoordinates[0], lng: this.defaultCoordinates[1] });
+      this.getLocationFromCoordinates(this.defaultCoordinates);
       this.leafletMap.setView(
-        [this.defaultCoordinates[0],
-        this.defaultCoordinates[1]], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
+        [this.defaultCoordinates.lat, this.defaultCoordinates.lng], LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
     }
   }
 
@@ -82,7 +82,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
       this.marker.addTo(this.leafletMap.map);
 
       // Get the initial location if there is no external offset
-      this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
+      this.getLocationFromCoordinates(this.defaultCoordinates);
 
       // Subscribe on the map move event. will trigger each time user moves the app.
       this.leafletMap.map.on('move', () => {
@@ -145,5 +145,16 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   }
   clear = () => {
     this.locationPicker = { id: '', name: '', locationType: null };
+  }
+
+  private validCoordinates(coordinates) {
+    if (this.isNumber(coordinates.lat) && this.isNumber(coordinates.lng)) {
+      return true;
+    }
+    return false;
+  }
+
+  private isNumber(n) {
+    return !isNaN(+n) && isFinite(n);
   }
 }
