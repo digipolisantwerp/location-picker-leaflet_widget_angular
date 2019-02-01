@@ -36,7 +36,7 @@ describe('LocationPickerLeafletComponent', () => {
     fixture = TestBed.createComponent(LocationPickerLeafletComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.coordinatesOnInit = { lat: null, lng: null };
+    component.coordinates = { lat: null, lng: null };
     component.url = 'https://localhost';
     service = TestBed.get(LocationPickerLeafletService);
   });
@@ -90,27 +90,27 @@ describe('LocationPickerLeafletComponent', () => {
   });
 
   it('should update defaultCoordinates when external coordinates are given', () => {
-    component.coordinatesOnInit = dummyCoordinates;
+    component.coordinates = dummyCoordinates;
     component.ngOnChanges({
-      coordinatesOnInit: new SimpleChange(
+      coordinates: new SimpleChange(
         null,
-        component.coordinatesOnInit,
+        component.coordinates,
         true
       )
     });
     fixture.detectChanges();
-    expect(component.defaultCoordinates).toBe(component.coordinatesOnInit);
+    expect(component.defaultCoordinates).toBe(component.coordinates);
   });
 
   it('should not update defaultCoordinates when no external coordinates are given', () => {
     component.ngOnChanges({
-      coordinatesOnInit: new SimpleChange(
+      coordinates: new SimpleChange(
         null,
-        component.coordinatesOnInit,
+        component.coordinates,
         true
       )
     });
     fixture.detectChanges();
-    expect(component.defaultCoordinates).toBe(component.coordinatesOnInit);
+    expect(component.defaultCoordinates).toBe(component.coordinates);
   });
 });

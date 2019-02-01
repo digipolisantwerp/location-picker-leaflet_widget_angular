@@ -28,8 +28,8 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
   @Input() url: string;
   @Input() inputClearVisible = false;
-  @Input() coordinatesOnInit: { lat: number; lng: number };
-  @Input() showAddressOnInit = false;
+  @Input() coordinates: { lat: number; lng: number };
+  @Input() showAddress = false;
 
   @Input() locationUrl: string;
   @Input() coordinatesUrl: string;
@@ -54,7 +54,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   ) {}
 
   public ngOnChanges(changes: SimpleChanges) {
-    const coordinatesChanged: SimpleChange = changes.coordinatesOnInit;
+    const coordinatesChanged: SimpleChange = changes.coordinates;
     this.defaultCoordinates =
       coordinatesChanged &&
       this.validCoordinates(coordinatesChanged.currentValue)
@@ -132,7 +132,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
         coordinates
       )
       .then((location: LocationItem) => {
-        if (this.showAddressOnInit) {
+        if (this.showAddress) {
           this.locationPicker = location;
         }
         this.emitValue(location);
