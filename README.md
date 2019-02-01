@@ -51,9 +51,9 @@ Add the leaflet CSS styles to the `angular.json` file.
 
 ```html
 <aui-location-picker-leaflet class="widget"
-    [externalOffset]="newCoordinates"
-    [showDefaultAddress]="showDefaultAddress"
-    [locationApiHost]="http://localhost:9999"
+    [coordinatesOnInit]="newCoordinates"
+    [showAddressOnInit]="showAddressOnInit"
+    [url]="http://localhost:9999"
     (locationChange)="addressResolvedCallback($event)"
 ></aui-location-picker-leaflet>
 ```
@@ -77,11 +77,11 @@ Every value in the backing list must have a unique id.
 
 ### Supported attributes
 
-- **coordinatesEndpoint**: (string) when /api/coordinates is not default endpoint
-- **locationPickerUrl**: (string) required URL of the back-end service feeding this widget
-- **locationPickerEndpoint**: (string) when /api/location is not default endpoint
-- **externalOffset**: (Object({ lat: number, lng: number })) when set will retrieve location by coordinates
-- **showDefaultAddress**: (boolean) wether or not to show the default address in the input field
+- **url**: (string) required URL of the back-end service feeding this widget
+- **coordinatesUrl**: (string) when `/api/coordinates` is not the required endpoint to get data based on coordinates
+- **locationUrl**: (string) when `/api/location` is not the required endpoint to get data based on location
+- **coordinatesOnInit**: (Object({ lat: number, lng: number })) will center the map on the given coordinates at the initialization of the widget
+- **showAddressOnInit**: (boolean) whether or not to show the address in the input field at the initialization of the widget
 
 ### Events
 
@@ -94,7 +94,7 @@ The back-end service implements the following protocol:
 
 - GET /path/to/endpoint?search=...&types=...
 - **search**: the text that the user typed on which to match
-- **types**: a comma-separated list of types to return, default value = "street,number,poi"
+- **types**: a comma-separated list of types to return, default value = 'street,number,poi'
 - **result**: JSON-encoded array of [LocationPickerValue](src/location-picker/location-picker.types.ts) objects
 
 ## Run the demo app

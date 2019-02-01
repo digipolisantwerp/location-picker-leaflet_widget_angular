@@ -1,5 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
-import { baseMapAntwerp, baseMapWorldGray, LeafletMap } from '@acpaas-ui/ngx-components/map';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  OnChanges,
+  SimpleChanges,
+  SimpleChange
+} from '@angular/core';
+import {
+  baseMapAntwerp,
+  baseMapWorldGray,
+  LeafletMap
+} from '@acpaas-ui/ngx-components/map';
 import * as L from 'leaflet';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 import './leafletMarkerFix';
@@ -10,65 +23,67 @@ import { LocationItem } from './LocationItem.domain';
   templateUrl: './location-picker-leaflet.component.html',
   styleUrls: ['./location-picker-leaflet.component.scss']
 })
-
 export class LocationPickerLeafletComponent implements OnChanges, OnInit {
-
   public static LEAFLET_DEFAULT_ZOOM = 16;
 
-  @Input() locationApiHost: string;
+  @Input() url: string;
   @Input() inputClearVisible = false;
-  @Input() externalOffset = { };
-  @Input() showDefaultAddress = false;
+  @Input() coordinatesOnInit: { lat: number; lng: number };
+  @Input() showAddressOnInit = false;
 
-  @Input() locationPickerEndpoint: string = null;
-  @Input() coordinatesEndpoint: string = null;
+  @Input() locationUrl: string;
+  @Input() coordinatesUrl: string;
 
-  @Output() locationChange: EventEmitter<LocationItem> = new EventEmitter<LocationItem>();
-  @Output() mapLocationChange: EventEmitter<[number, number]> = new EventEmitter<[number, number]>();
+  @Output() locationChange: EventEmitter<LocationItem> = new EventEmitter<
+    LocationItem
+  >();
+  @Output() mapLocationChange: EventEmitter<
+    [number, number]
+  > = new EventEmitter<[number, number]>();
 
   public locationPicker: LocationItem;
-  public defaultLocationPickerEndpoint = '/api/locations';
+  public defaultCoordinates = { lat: 51.215, lng: 4.425 }; // default center point
+  public defaultLocationUrl = '/api/locations';
   public leafletMap: LeafletMap;
 
-  private defaultCoordinates = { lat: 51.215, lng: 4.425 }; // default center point
-  private defaultCoordinatesEndpoint = '/api/coordinates';
+  private defaultCoordinatesUrl = '/api/coordinates';
   private marker: L.marker;
 
-  constructor(private locationPickerLeafletService: LocationPickerLeafletService) {
-  }
+  constructor(
+    private locationPickerLeafletService: LocationPickerLeafletService
+  ) {}
 
-  ngOnChanges(changes: SimpleChanges) {
-    const coordinatesChanged: SimpleChange = changes.externalOffset;
-    this.defaultCoordinates = coordinatesChanged && this.validCoordinates(coordinatesChanged.currentValue) ?
-    coordinatesChanged.currentValue : this.defaultCoordinates;
+  public ngOnChanges(changes: SimpleChanges) {
+    const coordinatesChanged: SimpleChange = changes.coordinatesOnInit;
+    this.defaultCoordinates =
+      coordinatesChanged &&
+      this.validCoordinates(coordinatesChanged.currentValue)
+        ? coordinatesChanged.currentValue
+        : this.defaultCoordinates;
     if (this.leafletMap) {
       this.getLocationFromCoordinates(this.defaultCoordinates);
       this.leafletMap.setView(
         [this.defaultCoordinates.lat, this.defaultCoordinates.lng],
-        LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
+        LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM
+      );
     }
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.leafletMap = new LeafletMap({
       zoom: LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM, // default zoom level
-      center: this.defaultCoordinates,
-      onAddPolygon: (layer) => {
-      },
-      onAddLine: (layer) => {
-      },
-      onEditFeature: (feature) => {
-      }
+      center: this.defaultCoordinates
     });
 
     // Checks  the required attributes
-    if (!this.locationApiHost) {
-      throw new Error('Attribute \'locationApiHost\' is required on aui-location-leaflet-smart-widget element.');
+    if (!this.url) {
+      throw new Error(
+        `Attribute 'url' is required on aui-location-leaflet-smart-widget element.`
+      );
     }
 
-    // Layer can only be drawn on the leaflet after it has been initted.
+    // Layer can only be drawn on the leaflet after it has been initiated.
     this.leafletMap.onInit.subscribe(() => {
-
       this.leafletMap.map.options.minZoom = 12;
       this.leafletMap.map.options.maxZoom = 19;
 
@@ -87,7 +102,6 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
       // Subscribe on the map move event. will trigger each time user moves the app.
       this.leafletMap.map.on('move', () => {
-
         // When the map moves, marker should be set at the center
         this.marker.setLatLng(this.leafletMap.map.getCenter());
 
@@ -98,54 +112,72 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
       // Subscribe to the dragend event. This will only trigger when the user stopped moving the map.
       // Using this event to prevent continuous calls
       this.leafletMap.map.on('dragend', () => {
-
         // Calling the server to get location from coordinates.
         this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
       });
 
-      this.leafletMap.map.on('locationfound', (location) => {
+      this.leafletMap.map.on('locationfound', location => {
         this.getLocationFromCoordinates(location.latlng);
       });
-
     });
   }
 
-  getLocationFromCoordinates = (coordinates: { lat: number, lng: number }) => {
-    this.locationPickerLeafletService.getLocationFromCoordinates(
-      (this.locationApiHost + (this.coordinatesEndpoint ? this.coordinatesEndpoint : this.defaultCoordinatesEndpoint))
-        .toString(), coordinates)
+  public getLocationFromCoordinates = (coordinates: { lat: number; lng: number }) => {
+    this.locationPickerLeafletService
+      .getLocationFromCoordinates(
+        (
+          this.url +
+          (this.coordinatesUrl ? this.coordinatesUrl : this.defaultCoordinatesUrl)
+        ).toString(),
+        coordinates
+      )
       .then((location: LocationItem) => {
-        if (this.showDefaultAddress) {
+        if (this.showAddressOnInit) {
           this.locationPicker = location;
         }
         this.emitValue(location);
-      }).catch(err => {
-        this.locationPicker ? this.locationPicker.name = '' : console.log(err);
+      })
+      .catch(err => {
+        this.locationPicker
+          ? (this.locationPicker.name = '')
+          : console.log(err);
       });
   }
 
-  emitValue = (location: LocationItem) => {
+  public emitValue = (location: LocationItem) => {
     this.locationChange.emit(location);
   }
 
-  locationPickerValueChanged = (location: LocationItem) => {
+  public locationPickerValueChanged = (location: LocationItem) => {
     // Location picker value has changed, which means there is a result from the server
     if (!location || !location.coordinates || !location.coordinates.latLng) {
       // centroid logic
       if (!location.polygons || !location.polygons.length) {
         return;
       }
-      const arr = location.polygons[0].map(coordinate => [coordinate.lat, coordinate.lng]);
-      const centerCoordinates = L.polygon(arr, {}).getBounds().getCenter();
+      const arr = location.polygons[0].map(coordinate => [
+        coordinate.lat,
+        coordinate.lng
+      ]);
+      const centerCoordinates = L.polygon(arr, {})
+        .getBounds()
+        .getCenter();
       location.coordinates = { latLng: centerCoordinates };
     }
 
     this.emitValue(location);
-    this.leafletMap.setView([location.coordinates.latLng.lat, location.coordinates.latLng.lng],
-      LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM);
+    this.leafletMap.setView(
+      [location.coordinates.latLng.lat, location.coordinates.latLng.lng],
+      LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM
+    );
   }
-  clear = () => {
+
+  public clear = () => {
     this.locationPicker = { id: '', name: '', locationType: null };
+  }
+
+  private isNumber(n) {
+    return !isNaN(+n) && isFinite(n);
   }
 
   private validCoordinates(coordinates) {
@@ -153,9 +185,5 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
       return true;
     }
     return false;
-  }
-
-  private isNumber(n) {
-    return !isNaN(+n) && isFinite(n);
   }
 }
