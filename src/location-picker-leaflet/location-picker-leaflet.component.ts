@@ -24,7 +24,6 @@ import { LocationItem } from './LocationItem.domain';
   styleUrls: ['./location-picker-leaflet.component.scss']
 })
 export class LocationPickerLeafletComponent implements OnChanges, OnInit {
-  public static LEAFLET_DEFAULT_ZOOM = 16;
 
   @Input() url: string;
   @Input() inputClearVisible = false;
@@ -41,10 +40,13 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     [number, number]
   > = new EventEmitter<[number, number]>();
 
-  public locationPicker: LocationItem;
   public defaultCoordinates = { lat: 51.215, lng: 4.425 }; // default center point
   public defaultLocationUrl = '/api/locations';
   public leafletMap: LeafletMap;
+  public leafletDefaultZoom = 16;
+  public leafletMinZoom = 12;
+  public leafletMaxZoom = 19;
+  public locationPicker: LocationItem;
 
   private defaultCoordinatesUrl = '/api/coordinates';
   private marker: L.marker;
@@ -64,14 +66,14 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
       this.getLocationFromCoordinates(this.defaultCoordinates);
       this.leafletMap.setView(
         [this.defaultCoordinates.lat, this.defaultCoordinates.lng],
-        LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM
+        this.leafletDefaultZoom
       );
     }
   }
 
   public ngOnInit() {
     this.leafletMap = new LeafletMap({
-      zoom: LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM, // default zoom level
+      zoom: this.leafletDefaultZoom, // default zoom level
       center: this.defaultCoordinates
     });
 
@@ -84,15 +86,15 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
     // Layer can only be drawn on the leaflet after it has been initiated.
     this.leafletMap.onInit.subscribe(() => {
-      this.leafletMap.map.options.minZoom = 12;
-      this.leafletMap.map.options.maxZoom = 19;
+      this.leafletMap.map.options.minZoom = this.leafletMinZoom;
+      this.leafletMap.map.options.maxZoom = this.leafletMaxZoom;
 
       // Adding the layer to the leaflet.
       this.leafletMap.addTileLayer(baseMapWorldGray);
       this.leafletMap.addTileLayer(baseMapAntwerp);
 
       // Declare a marker with standard icon, widget can be expanded with custom icon support.
-      this.marker = new L.marker(this.leafletMap.map.getCenter());
+      this.marker = new L.marker(this.centerCoordinates());
 
       // Add marker to the leaflet.
       this.marker.addTo(this.leafletMap.map);
@@ -100,20 +102,21 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
       // Get the initial location if there is no external offset
       this.getLocationFromCoordinates(this.defaultCoordinates);
 
-      // Subscribe on the map move event. will trigger each time user moves the app.
+      // Subscribe on the map move event. will trigger each time user moves the map.
       this.leafletMap.map.on('move', () => {
         // When the map moves, marker should be set at the center
-        this.marker.setLatLng(this.leafletMap.map.getCenter());
+        const coordinates = this.centerCoordinates();
+        this.marker.setLatLng(coordinates);
 
         // Emit the location of the leaflet
-        this.mapLocationChange.emit(this.leafletMap.map.getCenter());
+        this.mapLocationChange.emit(coordinates);
       });
 
       // Subscribe to the dragend event. This will only trigger when the user stopped moving the map.
       // Using this event to prevent continuous calls
       this.leafletMap.map.on('dragend', () => {
         // Calling the server to get location from coordinates.
-        this.getLocationFromCoordinates(this.leafletMap.map.getCenter());
+        this.getLocationFromCoordinates(this.centerCoordinates());
       });
 
       this.leafletMap.map.on('locationfound', location => {
@@ -168,7 +171,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     this.emitValue(location);
     this.leafletMap.setView(
       [location.coordinates.latLng.lat, location.coordinates.latLng.lng],
-      LocationPickerLeafletComponent.LEAFLET_DEFAULT_ZOOM
+      this.leafletDefaultZoom
     );
   }
 
@@ -176,8 +179,12 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     this.locationPicker = { id: '', name: '', locationType: null };
   }
 
+  private centerCoordinates  = () => {
+    return this.leafletMap.map.getCenter();
+  }
+
   private isNumber(n) {
-    return !isNaN(+n) && isFinite(n);
+    return isFinite(n);
   }
 
   private validCoordinates(coordinates) {
