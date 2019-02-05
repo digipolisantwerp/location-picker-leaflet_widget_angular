@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-root',
@@ -7,19 +6,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+  public newCoordinates = { lat: 51.19506875061893, lng: 4.381795173474985 };
+  public showAddress = true;
+  public url = 'http://localhost:9999';
 
-  url = 'http://localhost:9999';
-  trigger: BehaviorSubject<{ lat: number, lng: number }> = new BehaviorSubject({ lat: null, lng: null });
-  triggerNoSubject: { lat: number, lng: number };
-
-  constructor() {
-    // setTimeout(() => {
-    //     this.triggerNoSubject = { 'lat': 51.21025180508141, 'lng': 4.474143732169805 };
-    // }, 2000);
-  }
-
-  addressResolvedCallback = (location) => {
+  public addressResolvedCallback = (location) => {
     console.log(location);
   }
 }

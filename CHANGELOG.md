@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- [BREAKING] Simplified attributes to give external coordinates and show the default address or not
+
 <!--
 "### Added" for new features.
 "### Changed" for changes in existing functionality.
