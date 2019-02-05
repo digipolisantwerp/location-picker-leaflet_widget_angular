@@ -40,6 +40,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     [number, number]
   > = new EventEmitter<[number, number]>();
 
+  public locationPickerUrl = '';
   public defaultCoordinates = { lat: 51.215, lng: 4.425 }; // default center point
   public defaultLocationUrl = '/api/locations';
   public leafletMap: LeafletMap;
@@ -77,12 +78,15 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
       center: this.defaultCoordinates
     });
 
-    // Checks  the required attributes
+    // Checks the required attributes
     if (!this.url) {
       throw new Error(
         `Attribute 'url' is required on aui-location-leaflet-smart-widget element.`
       );
     }
+
+    // Set the locationUrl
+    this.locationPickerUrl = this.createUrl(this.locationUrl, this.defaultLocationUrl);
 
     // Layer can only be drawn on the leaflet after it has been initiated.
     this.leafletMap.onInit.subscribe(() => {
