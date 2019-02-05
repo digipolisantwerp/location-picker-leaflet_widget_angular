@@ -128,10 +128,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   public getLocationFromCoordinates = (coordinates: { lat: number; lng: number }) => {
     this.locationPickerLeafletService
       .getLocationFromCoordinates(
-        (
-          this.url +
-          (this.coordinatesUrl ? this.coordinatesUrl : this.defaultCoordinatesUrl)
-        ).toString(),
+        this.createUrl(this.coordinatesUrl, this.defaultCoordinatesUrl),
         coordinates
       )
       .then((location: LocationItem) => {
@@ -177,6 +174,13 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
   public clear = () => {
     this.locationPicker = { id: '', name: '', locationType: null };
+  }
+
+  public createUrl = (customUrl, defaultUrl) => {
+    return (
+      this.url +
+      (customUrl ? customUrl : defaultUrl)
+    ).toString();
   }
 
   private centerCoordinates  = () => {

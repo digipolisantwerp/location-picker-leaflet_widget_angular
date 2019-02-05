@@ -1,5 +1,5 @@
 <aui-location-picker
-  url="{{(url + (locationUrl ? locationUrl: defaultLocationUrl)).toString()}}"
+  [url]="createUrl(locationUrl, defaultLocationUrl)"
   [(value)]="locationPicker"
   (valueChange)="locationPickerValueChanged(locationPicker)">
 </aui-location-picker>

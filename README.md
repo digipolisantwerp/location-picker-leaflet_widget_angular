@@ -79,8 +79,8 @@ Every value in the backing list must have a unique id.
 
 - **url**: (string) required URL of the back-end service feeding this widget
 - **coordinatesUrl**: (string) when `/api/coordinates` is not the required endpoint to get data based on coordinates
-- **locationUrl**: (string) when `/api/location` is not the required endpoint to get data based on location
-- **coordinates**: (Object({ lat: number, lng: number })) will center the map on the given coordinates at the initialization of the widget
+- **locationUrl**: (string) when `/api/locations` is not the required endpoint to get data based on location
+- **coordinates**: (Object({ lat: number, lng: number })) will center the map on the given latitude and longitude coordinates at the initialization of the widget
 - **showAddress**: (boolean) whether or not to show the address in the input field at the initialization of the widget
 
 ### Events
