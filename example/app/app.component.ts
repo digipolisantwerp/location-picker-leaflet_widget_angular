@@ -26,5 +26,3 @@ export class AppComponent {
     console.log(location);
   }
 }
-
-
