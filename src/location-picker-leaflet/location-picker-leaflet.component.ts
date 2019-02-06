@@ -17,6 +17,7 @@ import * as L from 'leaflet';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 import './leafletMarkerFix';
 import { LocationItem } from './LocationItem.domain';
+import { LocationPickerValue } from '@acpaas-ui-widgets/ngx-location-picker';
 
 @Component({
   selector: 'aui-location-picker-leaflet',
@@ -28,6 +29,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   @Input() url: string;
   @Input() inputClearVisible = false;
   @Input() coordinates: { lat: number; lng: number };
+  @Input() locationObject: LocationItem;
   @Input() showAddress = false;
 
   @Input() locationUrl: string;
@@ -58,11 +60,22 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
   public ngOnChanges(changes: SimpleChanges) {
     const coordinatesChanged: SimpleChange = changes.coordinates;
+    const locationObjectChanged: SimpleChange = changes.locationObject;
+
+    // Set the Location picker value and default coordinates if a location object is given
+    if (locationObjectChanged && this.validLocationObject(locationObjectChanged.currentValue)) {
+      console.log('locationObject = ', locationObjectChanged.currentValue);
+      this.locationPicker = locationObjectChanged.currentValue;
+      this.defaultCoordinates = this.locationPicker.coordinates.latLng;
+    } else {
+    // Set the default coordinates if coordinates are given
     this.defaultCoordinates =
       coordinatesChanged &&
       this.validCoordinates(coordinatesChanged.currentValue)
         ? coordinatesChanged.currentValue
         : this.defaultCoordinates;
+    }
+
     if (this.leafletMap) {
       this.getLocationFromCoordinates(this.defaultCoordinates);
       this.leafletMap.setView(
@@ -199,6 +212,12 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     if (this.isNumber(coordinates.lat) && this.isNumber(coordinates.lng)) {
       return true;
     }
-    return false;
+  }
+
+  // User-Defined Type Guard to check if the locationObject is valid
+  private validLocationObject(locationObject: LocationItem): locationObject is LocationItem {
+    if (locationObject.name && locationObject.coordinates.latLng) {
+      return true;
+    }
   }
 }
