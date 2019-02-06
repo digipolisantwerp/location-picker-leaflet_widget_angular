@@ -7,19 +7,16 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public locationObject = {
-    id: '311',
+    id: 'P_DA/Locaties/MapServer/19/8',
+    name: 'BERENDRECHT_ZANDVLIET_LILLO',
     coordinates: {
-      latLng: {lat: 51.24843262434907, lng: 4.427903258539865}
+      latLng: {lat: 51.334855295811295, lng: 4.29289442516156},
     },
-    district: 'Merksem',
-    locationType: 'street',
-    name: 'Bergen op Zoomlaan 2',
-    number: '2',
-    postal: '2170',
-    street: 'Bergen op Zoomlaan',
+    layer: 'district',
+    locationType: 'poi',
   };
   public newCoordinates = { lat: 51.19506875061893, lng: 4.381795173474985 };
-  public showAddress = true;
+  public showAddress = false;
   public url = 'http://localhost:9999';
 
   public addressResolvedCallback = (location) => {

@@ -61,10 +61,13 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     const coordinatesChanged: SimpleChange = changes.coordinates;
     const locationObjectChanged: SimpleChange = changes.locationObject;
 
-    // Set the Location picker value and default coordinates if a location object is given
+    // Set the Location picker value and default coordinates if a location object is given and showAddress is true
     if (locationObjectChanged && this.validLocationObject(locationObjectChanged.currentValue)) {
-      this.locationPicker = locationObjectChanged.currentValue;
-      this.defaultCoordinates = this.locationPicker.coordinates.latLng;
+      const currentValue = locationObjectChanged.currentValue;
+      this.defaultCoordinates = currentValue.coordinates.latLng;
+      if (this.showAddress) {
+        this.locationPicker = currentValue;
+      }
     } else {
     // Set the default coordinates if coordinates are given
     this.defaultCoordinates =
@@ -147,7 +150,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
         coordinates
       )
       .then((location: LocationItem) => {
-        if (this.showAddress) {
+        if (this.showAddress && !this.locationPicker) {
           this.locationPicker = location;
         }
         this.emitValue(location);
