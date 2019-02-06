@@ -17,7 +17,6 @@ import * as L from 'leaflet';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 import './leafletMarkerFix';
 import { LocationItem } from './LocationItem.domain';
-import { LocationPickerValue } from '@acpaas-ui-widgets/ngx-location-picker';
 
 @Component({
   selector: 'aui-location-picker-leaflet',
