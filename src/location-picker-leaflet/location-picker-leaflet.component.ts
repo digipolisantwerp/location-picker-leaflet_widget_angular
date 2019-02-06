@@ -50,6 +50,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   public leafletMaxZoom = 19;
   public locationPicker: LocationItem;
 
+  private changedLocation: LocationItem;
   private defaultCoordinatesUrl = '/api/coordinates';
   private marker: L.marker;
 
@@ -63,10 +64,10 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
     // Set the Location picker value and default coordinates if a location object is given and showAddress is true
     if (locationObjectChanged && this.validLocationObject(locationObjectChanged.currentValue)) {
-      const currentValue = locationObjectChanged.currentValue;
-      this.defaultCoordinates = currentValue.coordinates.latLng;
+      this.changedLocation = locationObjectChanged.currentValue;
+      this.defaultCoordinates = this.changedLocation.coordinates.latLng;
       if (this.showAddress) {
-        this.locationPicker = currentValue;
+        this.locationPicker = this.changedLocation;
       }
     } else {
     // Set the default coordinates if coordinates are given
@@ -78,7 +79,10 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     }
 
     if (this.leafletMap) {
-      this.getLocationFromCoordinates(this.defaultCoordinates);
+      // If there's no location object, get the location with coordinates
+      if (!this.changedLocation) {
+        this.getLocationFromCoordinates(this.defaultCoordinates);
+      }
       this.leafletMap.setView(
         [this.defaultCoordinates.lat, this.defaultCoordinates.lng],
         this.leafletDefaultZoom
@@ -149,6 +153,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
         this.createUrl(this.coordinatesUrl, this.defaultCoordinatesUrl),
         coordinates
       )
+      // set the location in the Location Picker if address should be shown and there's no Location Picker value
       .then((location: LocationItem) => {
         if (this.showAddress && !this.locationPicker) {
           this.locationPicker = location;
@@ -167,27 +172,28 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   }
 
   public locationPickerValueChanged = (location: LocationItem) => {
-    // Location picker value has changed, which means there is a result from the server
-    if (!location || !location.coordinates || !location.coordinates.latLng) {
-      // centroid logic
-      if (!location.polygons || !location.polygons.length) {
-        return;
+    if (location) {
+      // Location picker value has changed, which means there is a result from the server
+      if (!location.coordinates || !location.coordinates.latLng) {
+        // If there are no coordinates, use centroid logic to create center coordinates
+        if (!location.polygons || !location.polygons.length) {
+          return;
+        }
+        const arr = location.polygons[0].map(coordinate => [
+          coordinate.lat,
+          coordinate.lng
+        ]);
+        const centerCoordinates = L.polygon(arr, {})
+          .getBounds()
+          .getCenter();
+        location.coordinates = { latLng: centerCoordinates };
       }
-      const arr = location.polygons[0].map(coordinate => [
-        coordinate.lat,
-        coordinate.lng
-      ]);
-      const centerCoordinates = L.polygon(arr, {})
-        .getBounds()
-        .getCenter();
-      location.coordinates = { latLng: centerCoordinates };
+      this.emitValue(location);
+      this.leafletMap.setView(
+        [location.coordinates.latLng.lat, location.coordinates.latLng.lng],
+        this.leafletDefaultZoom
+      );
     }
-
-    this.emitValue(location);
-    this.leafletMap.setView(
-      [location.coordinates.latLng.lat, location.coordinates.latLng.lng],
-      this.leafletDefaultZoom
-    );
   }
 
   public clear = () => {
