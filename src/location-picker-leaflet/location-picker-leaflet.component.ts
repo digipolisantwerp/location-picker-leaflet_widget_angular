@@ -25,14 +25,15 @@ import { LocationItem } from './LocationItem.domain';
 })
 export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
-  @Input() url: string;
-  @Input() inputClearVisible = false;
   @Input() coordinates: { lat: number; lng: number };
+  @Input() inputClearVisible = false;
   @Input() locationObject: LocationItem;
   @Input() showAddress = false;
+  @Input() url: string;
 
-  @Input() locationUrl: string;
+  // Override the default endpoints
   @Input() coordinatesUrl: string;
+  @Input() locationUrl: string;
 
   @Output() locationChange: EventEmitter<LocationItem> = new EventEmitter<
     LocationItem
@@ -41,7 +42,6 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     [number, number]
   > = new EventEmitter<[number, number]>();
 
-  public locationPickerUrl = '';
   public defaultCoordinates = { lat: 51.215, lng: 4.425 }; // default center point
   public defaultLocationUrl = '/api/locations';
   public leafletMap: LeafletMap;
@@ -49,6 +49,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   public leafletMinZoom = 12;
   public leafletMaxZoom = 19;
   public locationPicker: LocationItem;
+  public locationPickerUrl = '';
 
   private changedLocation: LocationItem;
   private defaultCoordinatesUrl = '/api/coordinates';
