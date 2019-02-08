@@ -8,7 +8,7 @@ export class LocationPickerLeafletService {
     }
 
     // Method to retrieve a location based on coordinates.
-    getLocationFromCoordinates = (url: string, coordinates): Promise<any> => {
+    getLocation = (url: string, coordinates): Promise<any> => {
         return new Promise((resolve, reject) => {
             this.http.get(url, {
                 params: {

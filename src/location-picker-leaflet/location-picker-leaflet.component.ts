@@ -25,7 +25,6 @@ import { LocationItem } from './LocationItem.domain';
 })
 export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
-  @Input() coordinates: { lat: number; lng: number };
   @Input() inputClearVisible = false;
   @Input() locationObject: LocationItem;
   @Input() showAddress = false;
@@ -48,8 +47,9 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   public leafletDefaultZoom = 16;
   public leafletMinZoom = 12;
   public leafletMaxZoom = 19;
-  public locationPicker: LocationItem;
   public locationPickerUrl = '';
+  public locationId = '';
+  public locationPicker: LocationItem;
 
   private changedLocation: LocationItem;
   private defaultCoordinatesUrl = '/api/coordinates';
@@ -60,30 +60,34 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   ) {}
 
   public ngOnChanges(changes: SimpleChanges) {
-    const coordinatesChanged: SimpleChange = changes.coordinates;
     const locationObjectChanged: SimpleChange = changes.locationObject;
 
     // Set the Location picker value and default coordinates if a location object is given and showAddress is true
     if (locationObjectChanged && this.validLocationObject(locationObjectChanged.currentValue)) {
       this.changedLocation = locationObjectChanged.currentValue;
-      this.defaultCoordinates = this.changedLocation.coordinates.latLng;
+
+      // Set default coordinates so the map can be centered
+      this.defaultCoordinates = this.validCoordinates(this.changedLocation.coordinates.latLng)
+      ? this.changedLocation.coordinates.latLng
+      : this.defaultCoordinates;
+
+      // Set location id as fallback if no coordinates are present
+      if (this.changedLocation.id) {
+        this.locationId = this.changedLocation.id;
+      }
+
+      // Show location in locationPicker
       if (this.showAddress) {
         this.locationPicker = this.changedLocation;
       }
-    } else {
-    // Set the default coordinates if coordinates are given
-    this.defaultCoordinates =
-      coordinatesChanged &&
-      this.validCoordinates(coordinatesChanged.currentValue)
-        ? coordinatesChanged.currentValue
-        : this.defaultCoordinates;
     }
 
     if (this.leafletMap) {
-      // If there's no location object, get the location with coordinates
+      // Get location with default coordinates if no location object is present and set it on Location Picker
       if (!this.changedLocation) {
-        this.getLocationFromCoordinates(this.defaultCoordinates);
+        this.getLocation(this.coordinatesUrl, this.defaultCoordinatesUrl, this.defaultCoordinates);
       }
+      // Center the map on default coordinates
       this.leafletMap.setView(
         [this.defaultCoordinates.lat, this.defaultCoordinates.lng],
         this.leafletDefaultZoom
@@ -107,6 +111,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     // Set the locationUrl
     this.locationPickerUrl = this.createUrl(this.locationUrl, this.defaultLocationUrl);
 
+    // MAP SCAFFOLDING
     // Layer can only be drawn on the leaflet after it has been initiated.
     this.leafletMap.onInit.subscribe(() => {
       this.leafletMap.map.options.minZoom = this.leafletMinZoom;
@@ -123,7 +128,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
       this.marker.addTo(this.leafletMap.map);
 
       // Get the initial location if there is no external offset
-      this.getLocationFromCoordinates(this.defaultCoordinates);
+      this.getLocation(this.coordinatesUrl, this.defaultCoordinatesUrl, this.defaultCoordinates);
 
       // Subscribe on the map move event. will trigger each time user moves the map.
       this.leafletMap.map.on('move', () => {
@@ -139,19 +144,19 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
       // Using this event to prevent continuous calls
       this.leafletMap.map.on('dragend', () => {
         // Calling the server to get location from coordinates.
-        this.getLocationFromCoordinates(this.centerCoordinates());
+        this.getLocation(this.coordinatesUrl, this.defaultCoordinatesUrl, this.centerCoordinates());
       });
 
       this.leafletMap.map.on('locationfound', location => {
-        this.getLocationFromCoordinates(location.latlng);
+        this.getLocation(this.coordinatesUrl, this.defaultCoordinatesUrl, location.latlng);
       });
     });
   }
 
-  public getLocationFromCoordinates = (coordinates: { lat: number; lng: number }) => {
+  public getLocation = (customUrl: string, defaultUrl: string, coordinates: { lat: number; lng: number }) => {
     this.locationPickerLeafletService
-      .getLocationFromCoordinates(
-        this.createUrl(this.coordinatesUrl, this.defaultCoordinatesUrl),
+      .getLocation(
+        this.createUrl(customUrl, defaultUrl),
         coordinates
       )
       // set the location in the Location Picker if address should be shown and there's no Location Picker value
@@ -172,6 +177,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     this.locationChange.emit(location);
   }
 
+  // WHEN LOCATION PICKER VALUE CHANGED, UPDATE MAP
   public locationPickerValueChanged = (location: LocationItem) => {
     if (location) {
       // Location picker value has changed, which means there is a result from the server
@@ -197,6 +203,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     }
   }
 
+  // HELPERS
   public clear = () => {
     this.locationPicker = { id: '', name: '', locationType: null };
   }
@@ -220,12 +227,14 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     if (this.isNumber(coordinates.lat) && this.isNumber(coordinates.lng)) {
       return true;
     }
+    return false;
   }
 
   // User-Defined Type Guard to check if the locationObject is valid
   private validLocationObject(locationObject: LocationItem): locationObject is LocationItem {
-    if (locationObject.name && locationObject.coordinates.latLng) {
+    if (locationObject.name && (locationObject.coordinates.latLng || locationObject.id)) {
       return true;
     }
+    return false;
   }
 }

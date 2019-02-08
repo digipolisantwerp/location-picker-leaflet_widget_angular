@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public locationObject = {
+  public location = {
     id: 'P_DA/Locaties/MapServer/19/8',
     name: 'BERENDRECHT_ZANDVLIET_LILLO',
     coordinates: {
@@ -15,7 +15,6 @@ export class AppComponent {
     layer: 'district',
     locationType: 'poi',
   };
-  public newCoordinates = { lat: 51.19506875061893, lng: 4.381795173474985 };
   public showAddress = true;
   public url = 'http://localhost:9999';
 
