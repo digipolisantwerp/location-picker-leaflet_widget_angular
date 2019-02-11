@@ -7,6 +7,15 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public location = {
+    id: '2001887628',
+    name: 'Generaal Armstrongweg 1, 2020 Antwerpen',
+    coordinates: {
+      // latLng: {lat: 51.19506875061893, lng: 4.381795173474985},
+    },
+    layer: 'CRAB',
+    locationType: 'number',
+  };
+  public locationWithNoId = {
     id: 'P_DA/Locaties/MapServer/19/8',
     name: 'BERENDRECHT_ZANDVLIET_LILLO',
     coordinates: {

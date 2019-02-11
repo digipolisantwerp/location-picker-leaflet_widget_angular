@@ -16,7 +16,7 @@ import {
 import * as L from 'leaflet';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 import './leafletMarkerFix';
-import { LocationItem } from './LocationItem.domain';
+import { LocationItem, Coordinates } from './LocationItem.domain';
 
 @Component({
   selector: 'aui-location-picker-leaflet',
@@ -63,17 +63,22 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     const locationObjectChanged: SimpleChange = changes.locationObject;
 
     // Set the Location picker value and default coordinates if a location object is given and showAddress is true
-    if (locationObjectChanged && this.validLocationObject(locationObjectChanged.currentValue)) {
+    if (locationObjectChanged) {
       this.changedLocation = locationObjectChanged.currentValue;
 
-      // Set default coordinates so the map can be centered
-      this.defaultCoordinates = this.validCoordinates(this.changedLocation.coordinates.latLng)
-      ? this.changedLocation.coordinates.latLng
-      : this.defaultCoordinates;
+      // If the location doesn't have an latLng object, replace it with an empty object
+      const coordinatesValues = ((this.changedLocation.coordinates || {}).latLng || {});
 
-      // Set location id as fallback if no coordinates are present
-      if (this.changedLocation.id) {
-        this.locationId = this.changedLocation.id;
+      // Set default coordinates so the map can be centered
+      if ( this.locationPickerLeafletService.validCoordinates(coordinatesValues)) {
+        this.defaultCoordinates = this.changedLocation.coordinates.latLng;
+      } else {
+        // If the location doesn't have an latLng object, replace it with an empty object
+
+        // Set location id as fallback if no coordinates are present
+        if (this.changedLocation.hasOwnProperty('id')) {
+          this.getLocation(this.locationUrl, this.defaultLocationUrl, this.changedLocation.id);
+        }
       }
 
       // Show location in locationPicker
@@ -84,7 +89,8 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
     if (this.leafletMap) {
       // Get location with default coordinates if no location object is present and set it on Location Picker
-      if (!this.changedLocation) {
+      if (!this.locationPicker) {
+        this.locationPicker = this.changedLocation;
         this.getLocation(this.coordinatesUrl, this.defaultCoordinatesUrl, this.defaultCoordinates);
       }
       // Center the map on default coordinates
@@ -127,8 +133,9 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
       // Add marker to the leaflet.
       this.marker.addTo(this.leafletMap.map);
 
+      // NO NEED Because set above
       // Get the initial location if there is no external offset
-      this.getLocation(this.coordinatesUrl, this.defaultCoordinatesUrl, this.defaultCoordinates);
+      // this.getLocation(this.coordinatesUrl, this.defaultCoordinatesUrl, this.defaultCoordinates);
 
       // Subscribe on the map move event. will trigger each time user moves the map.
       this.leafletMap.map.on('move', () => {
@@ -153,17 +160,18 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     });
   }
 
-  public getLocation = (customUrl: string, defaultUrl: string, coordinates: { lat: number; lng: number }) => {
+  public getLocation = (customUrl: string, defaultUrl: string, query: any) => {
     this.locationPickerLeafletService
       .getLocation(
         this.createUrl(customUrl, defaultUrl),
-        coordinates
+        query
       )
       // set the location in the Location Picker if address should be shown and there's no Location Picker value
       .then((location: LocationItem) => {
         if (this.showAddress && !this.locationPicker) {
           this.locationPicker = location;
         }
+        this.defaultCoordinates = location.coordinates.latLng;
         this.emitValue(location);
       })
       .catch(err => {
@@ -219,22 +227,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     return this.leafletMap.map.getCenter();
   }
 
-  private isNumber(n) {
-    return isFinite(n);
-  }
-
-  private validCoordinates(coordinates) {
-    if (this.isNumber(coordinates.lat) && this.isNumber(coordinates.lng)) {
-      return true;
-    }
-    return false;
-  }
-
-  // User-Defined Type Guard to check if the locationObject is valid
-  private validLocationObject(locationObject: LocationItem): locationObject is LocationItem {
-    if (locationObject.name && (locationObject.coordinates.latLng || locationObject.id)) {
-      return true;
-    }
-    return false;
+  private hasProp (obj, prop) {
+    return Object.prototype.hasOwnProperty.call(obj, prop);
   }
 }
