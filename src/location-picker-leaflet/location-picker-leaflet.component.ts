@@ -48,11 +48,11 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   public leafletMinZoom = 12;
   public leafletMaxZoom = 19;
   public locationPickerUrl = '';
-  public locationId = '';
   public locationPicker: LocationItem;
 
   private changedLocation: LocationItem;
   private defaultCoordinatesUrl = '/api/coordinates';
+  private hasLocationId = false;
   private marker: L.marker;
 
   constructor(
@@ -77,7 +77,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
         // Set location id as fallback if no coordinates are present
         if (this.changedLocation.hasOwnProperty('id')) {
-          this.getLocation(this.locationUrl, this.defaultLocationUrl, this.changedLocation.id);
+          this.hasLocationId = true;
         }
       }
 
@@ -102,10 +102,21 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   }
 
   public ngOnInit() {
-    this.leafletMap = new LeafletMap({
-      zoom: this.leafletDefaultZoom, // default zoom level
-      center: this.defaultCoordinates
-    });
+    if (this.hasLocationId) {
+      this.getLocation(this.locationUrl, this.defaultLocationUrl, this.changedLocation.id);
+        this.locationPickerLeafletService
+          .getLocation(
+            this.createUrl(this.locationUrl, this.defaultLocationUrl),
+            this.changedLocation.id
+          )
+          // set the location in the Location Picker if address should be shown
+          .then(this.initializeMap)
+          .catch(err => {
+            console.log(err);
+          });
+    } else {
+      this.initializeMap();
+    }
 
     // Checks the required attributes
     if (!this.url) {
@@ -116,6 +127,13 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
     // Set the locationUrl
     this.locationPickerUrl = this.createUrl(this.locationUrl, this.defaultLocationUrl);
+  }
+
+  public initializeMap = () => {
+    this.leafletMap = new LeafletMap({
+      zoom: this.leafletDefaultZoom, // default zoom level
+      center: this.defaultCoordinates
+    });
 
     // MAP SCAFFOLDING
     // Layer can only be drawn on the leaflet after it has been initiated.
@@ -166,9 +184,9 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
         this.createUrl(customUrl, defaultUrl),
         query
       )
-      // set the location in the Location Picker if address should be shown and there's no Location Picker value
+      // set the location in the Location Picker if address should be shown
       .then((location: LocationItem) => {
-        if (this.showAddress && !this.locationPicker) {
+        if (this.showAddress) {
           this.locationPicker = location;
         }
         this.defaultCoordinates = location.coordinates.latLng;
