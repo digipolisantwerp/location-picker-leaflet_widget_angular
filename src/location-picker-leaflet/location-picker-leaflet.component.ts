@@ -50,6 +50,8 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   public locationPickerUrl = '';
   public locationPicker: LocationItem;
 
+  public loading = true;
+
   private changedLocation: LocationItem;
   private defaultCoordinatesUrl = '/api/coordinates';
   private hasLocationId = false;
@@ -63,6 +65,8 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     const locationObjectChanged: SimpleChange = changes.locationObject;
 
     // Set the Location picker value and default coordinates if a location object is given and showAddress is true
+    console.log(locationObjectChanged);
+
     if (locationObjectChanged) {
       this.changedLocation = locationObjectChanged.currentValue;
 
@@ -151,9 +155,10 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
       // Add marker to the leaflet.
       this.marker.addTo(this.leafletMap.map);
 
-      // NO NEED Because set above
-      // Get the initial location if there is no external offset
-      // this.getLocation(this.coordinatesUrl, this.defaultCoordinatesUrl, this.defaultCoordinates);
+      // Get the initial location if there is no location Object
+      if (!this.locationObject) {
+        this.getLocation(this.coordinatesUrl, this.defaultCoordinatesUrl, this.defaultCoordinates);
+      }
 
       // Subscribe on the map move event. will trigger each time user moves the map.
       this.leafletMap.map.on('move', () => {
@@ -176,6 +181,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
         this.getLocation(this.coordinatesUrl, this.defaultCoordinatesUrl, location.latlng);
       });
     });
+    this.loading = false;
   }
 
   public getLocation = (customUrl: string, defaultUrl: string, query: any) => {
