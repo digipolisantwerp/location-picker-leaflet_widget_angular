@@ -10,19 +10,9 @@ export class AppComponent {
     id: '2001887628',
     name: 'Generaal Armstrongweg 1, 2020 Antwerpen',
     coordinates: {
+      // When disabled the widget will get the coordinates based on the location id
       // latLng: {lat: 51.19506875061893, lng: 4.381795173474985},
-    },
-    layer: 'CRAB',
-    locationType: 'number',
-  };
-  public locationWithNoId = {
-    id: 'P_DA/Locaties/MapServer/19/8',
-    name: 'BERENDRECHT_ZANDVLIET_LILLO',
-    coordinates: {
-      latLng: {lat: 51.334855295811295, lng: 4.29289442516156},
-    },
-    layer: 'district',
-    locationType: 'poi',
+    }
   };
   public showAddress = true;
   public url = 'http://localhost:9999';
