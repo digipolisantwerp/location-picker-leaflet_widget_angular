@@ -198,22 +198,11 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     if (location) {
       // Location picker value has changed, which means there is a result from the server
       if (!location.coordinates || !location.coordinates.latLng) {
-        // If there are no coordinates, use centroid logic to create center coordinates
-        if (!location.polygons || !location.polygons.length) {
-          return;
-        }
-        const arr = location.polygons[0].map(coordinate => [
-          coordinate.lat,
-          coordinate.lng
-        ]);
-        const centerCoordinates = L.polygon(arr, {})
-          .getBounds()
-          .getCenter();
-        location.coordinates = { latLng: centerCoordinates };
+        this.centroidBasedCoordinates(location);
       }
       this.emitValue(location);
       this.leafletMap.setView(
-        [location.coordinates.latLng.lat, location.coordinates.latLng.lng],
+        [this.defaultCoordinates.lat, this.defaultCoordinates.lng],
         this.leafletDefaultZoom
       );
     }
@@ -222,6 +211,23 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   // HELPERS
   public clear = () => {
     this.locationPicker = { id: '', name: '', locationType: null };
+  }
+
+  // If there are no coordinates, use centroid logic to create center coordinates
+  private centroidBasedCoordinates = (location: LocationItem) => {
+    if (!location.polygons || !location.polygons.length) {
+      return;
+    }
+    const arr = location.polygons[0].map(coordinate => [
+      coordinate.lat,
+      coordinate.lng
+    ]);
+    const centerCoordinates = L.polygon(arr, {})
+      .getBounds()
+      .getCenter();
+
+    this.defaultCoordinates.lat = centerCoordinates.lat;
+    this.defaultCoordinates.lng = centerCoordinates.lng;
   }
 
   private createUrl = (customUrl, defaultUrl) => {
