@@ -18,6 +18,13 @@ describe('LocationPickerLeafletComponent', () => {
     },
     street: 'Burgemeester De Boeylaan'
   };
+  const emptyDummyLocation: LocationItem = {
+    id: 'P_DA/Locaties/MapServer/18/1168460',
+    name: 'Burgemeester De Boeylaan (Deurne)',
+    layer: 'straatnaam',
+    locationType: LocationType.Street,
+    street: 'Burgemeester De Boeylaan'
+  };
   let component: LocationPickerLeafletComponent;
   let element: any;
   let fixture: ComponentFixture<LocationPickerLeafletComponent>;
@@ -36,7 +43,8 @@ describe('LocationPickerLeafletComponent', () => {
     fixture = TestBed.createComponent(LocationPickerLeafletComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.coordinates = { lat: null, lng: null };
+    component.locationUrl = null;
+    component.location = null;
     component.url = 'https://localhost';
     service = TestBed.get(LocationPickerLeafletService);
   });
@@ -77,40 +85,33 @@ describe('LocationPickerLeafletComponent', () => {
   it('should not emit when locationpicker value changed with no coordinates', () => {
     component.ngOnInit();
     spyOn(component.locationChange, 'emit');
-    dummyLocation.coordinates = null;
-    component.locationPickerValueChanged(dummyLocation);
+    component.locationPickerValueChanged(emptyDummyLocation);
     expect(component.locationChange.emit).toHaveBeenCalledTimes(0);
   });
 
   it('should call locationservice', () => {
-    serviceSpy = spyOn(service, 'getLocationFromCoordinates').and.callThrough();
+    serviceSpy = spyOn(service, 'getLocation').and.callThrough();
     component.ngOnInit();
-    component.getLocationFromCoordinates(dummyCoordinates);
+    component.getLocation(component.locationUrl, component.defaultLocationUrl,  dummyCoordinates);
     expect(serviceSpy).toHaveBeenCalled();
   });
 
   it('should update defaultCoordinates when external coordinates are given', () => {
-    component.coordinates = dummyCoordinates;
+    component.location = dummyLocation;
     component.ngOnChanges({
-      coordinates: new SimpleChange(
+      location: new SimpleChange(
         null,
-        component.coordinates,
+        component.location,
         true
       )
     });
     fixture.detectChanges();
-    expect(component.defaultCoordinates).toBe(component.coordinates);
+    expect(component.defaultCoordinates).toBe(dummyCoordinates);
   });
 
   it('should not update defaultCoordinates when no external coordinates are given', () => {
-    component.ngOnChanges({
-      coordinates: new SimpleChange(
-        null,
-        component.coordinates,
-        true
-      )
-    });
+    const originalValue = component.defaultCoordinates;
     fixture.detectChanges();
-    expect(component.defaultCoordinates).toBe(component.coordinates);
+    expect(component.defaultCoordinates).toBe(originalValue);
   });
 });

@@ -3,9 +3,12 @@
   [(value)]="locationPicker"
   (valueChange)="locationPickerValueChanged(locationPicker)">
 </aui-location-picker>
+
 <div *ngIf="inputClearVisible" (click)="clear()" class="remove-input">
   <i class="fa fa-close"></i>
 </div>
+
+<div *ngIf="loading" class="a-spinner u-text-center u-margin-top"></div>
 <aui-leaflet *ngIf="!loading" [leafletMap]="leafletMap">
   <div controls bottom left>
     <aui-leaflet-zoom-control></aui-leaflet-zoom-control>
