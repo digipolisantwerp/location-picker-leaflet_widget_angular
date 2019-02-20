@@ -75,9 +75,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
         this.defaultCoordinates = this.changedLocation.coordinates.latLng;
       } else {
         // Check if there's a location id present
-        if (this.changedLocation.hasOwnProperty('id')) {
-          this.hasLocationId = true;
-        }
+        this.hasLocationId = this.changedLocation.hasOwnProperty('id');
       }
 
       // Show location in locationPicker

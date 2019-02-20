@@ -29,16 +29,16 @@ export class LocationPickerLeafletService {
     return new Promise((resolve, reject) => {
       this.http.get(url, this.parameter)
         .subscribe((response: any) => {
-          // If query were coordinates
+          if (response && response.error) {
+            return reject(response.error);
+          }
+          // If query were coordinates, response will be a single object
           if (response && response.location) {
             return resolve(response.location);
           }
-          // If query was an ID
-          if (response && response[0]) {
+          // If query was an ID, response will be an array, but only containing 1 object
+          if (response && response.length) {
             return resolve(response[0]);
-          }
-          if (response && response.error) {
-            return reject(response.error);
           }
         }, (err) => {
           return reject(err);
