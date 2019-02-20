@@ -47,13 +47,9 @@ export class LocationPickerLeafletService {
   }
 
   public validCoordinates(coordinates) {
-    if (this.isNumber(coordinates.lat) && this.isNumber(coordinates.lng)) {
+    if (isFinite(coordinates.lat) && isFinite(coordinates.lng)) {
       return true;
     }
     return false;
-  }
-
-  private isNumber(n) {
-    return isFinite(n);
   }
 }

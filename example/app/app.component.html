@@ -4,10 +4,9 @@
 <div class="u-container">
   <p>Picked location:</p>
   <aui-location-picker-leaflet
-    class="widget"
     [location]="location"
     [showAddress]="showAddress"
-    [url]=url
+    [url]="url"
     (locationChange)="addressResolvedCallback($event)">
   </aui-location-picker-leaflet>
 </div>
