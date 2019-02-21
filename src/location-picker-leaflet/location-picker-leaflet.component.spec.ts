@@ -111,6 +111,13 @@ describe('LocationPickerLeafletComponent', () => {
 
   it('should not update defaultCoordinates when no external coordinates are given', () => {
     const originalValue = component.defaultCoordinates;
+    component.ngOnChanges({
+      location: new SimpleChange(
+        null,
+        component.location,
+        true
+      )
+    });
     fixture.detectChanges();
     expect(component.defaultCoordinates).toBe(originalValue);
   });
