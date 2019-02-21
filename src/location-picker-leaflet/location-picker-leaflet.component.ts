@@ -193,17 +193,26 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
   // WHEN LOCATION PICKER VALUE CHANGED, UPDATE MAP
   public locationPickerValueChanged = (location: LocationItem) => {
-    if (location) {
-      // Location picker value has changed, which means there is a result from the server
-      if (!location.coordinates || !location.coordinates.latLng) {
-        this.centroidBasedCoordinates(location);
+    // Location picker value has changed, which means there is a result from the server
+    if (!location || !location.coordinates || !location.coordinates.latLng) {
+      // centroid logic
+      if (!location.polygons || !location.polygons.length) {
+        return;
       }
-      this.emitValue(location);
-      this.leafletMap.setView(
-        [this.defaultCoordinates.lat, this.defaultCoordinates.lng],
-        this.leafletDefaultZoom
-      );
+      const arr = location.polygons[0].map(coordinate => [
+        coordinate.lat,
+        coordinate.lng
+      ]);
+      const centerCoordinates = L.polygon(arr, {})
+        .getBounds()
+        .getCenter();
+      location.coordinates = { latLng: centerCoordinates };
     }
+    this.emitValue(location);
+    this.leafletMap.setView(
+      [location.coordinates.latLng.lat, location.coordinates.latLng.lng],
+      this.leafletDefaultZoom
+    );
   }
 
   // HELPERS
