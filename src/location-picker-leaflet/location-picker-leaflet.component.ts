@@ -49,11 +49,11 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   public leafletMaxZoom = 19;
   public loading = true;
   public locationPickerUrl = '';
-  public locationPicker: LocationItem;
+  public currentPickerLocation: LocationItem;
 
-  private changedLocation: LocationItem;
+  private newLocation: LocationItem;
   private defaultCoordinatesUrl = '/api/coordinates';
-  private hasLocationId = false;
+  private getLocationWithId = false;
   private marker: L.marker;
 
   constructor(
@@ -65,22 +65,22 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
     // Set the Location picker value and default coordinates if a location object is given and showAddress is true
     if (locationPropChanged && locationPropChanged.currentValue != null) {
-      this.changedLocation = locationPropChanged.currentValue;
+      this.newLocation = locationPropChanged.currentValue;
 
       // Create a const that either contains coordinates or is an empty object
-      const coordinatesValues = ((this.changedLocation.coordinates || {}).latLng || {});
+      const coordinatesValues = ((this.newLocation.coordinates || {}).latLng || {});
 
       // If there are coordinates, set them as the defaultCoordinates
       if (this.locationPickerLeafletService.validCoordinates(coordinatesValues)) {
-        this.defaultCoordinates = this.changedLocation.coordinates.latLng;
+        this.defaultCoordinates = this.newLocation.coordinates.latLng;
       } else {
         // Check if there's a location id present
-        this.hasLocationId = this.changedLocation.hasOwnProperty('id');
+        this.getLocationWithId = this.newLocation.hasOwnProperty('id');
       }
 
       // Show location in locationPicker
       if (this.showAddress) {
-        this.locationPicker = this.changedLocation;
+        this.currentPickerLocation = this.newLocation;
       }
     }
 
@@ -94,9 +94,9 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   }
 
   public ngOnInit() {
-    if (this.hasLocationId) {
-      this.getLocation(this.locationUrl, this.defaultLocationUrl, this.changedLocation.id);
-      this.hasLocationId = false;
+    if (this.getLocationWithId) {
+      this.getLocation(this.locationUrl, this.defaultLocationUrl, this.newLocation.id);
+      this.getLocationWithId = false;
     } else {
       this.initializeMap();
     }
@@ -172,7 +172,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
       // set the location in the Location Picker if address should be shown
       .then((location: LocationItem) => {
         if (this.showAddress) {
-          this.locationPicker = location;
+          this.currentPickerLocation = location;
         }
         this.defaultCoordinates = location.coordinates.latLng;
         this.emitValue(location);
@@ -181,8 +181,8 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
         }
       })
       .catch(err => {
-        this.locationPicker
-          ? (this.locationPicker.name = '')
+        this.currentPickerLocation
+          ? (this.currentPickerLocation.name = '')
           : console.log(err);
       });
   }
@@ -217,7 +217,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
   // HELPERS
   public clear = () => {
-    this.locationPicker = { id: '', name: '', locationType: null };
+    this.currentPickerLocation = { id: '', name: '', locationType: null };
   }
 
   // If there are no coordinates, use centroid logic to create center coordinates

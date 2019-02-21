@@ -1,7 +1,7 @@
 <aui-location-picker
   [url]="locationPickerUrl"
-  [(value)]="locationPicker"
-  (valueChange)="locationPickerValueChanged(locationPicker)">
+  [(value)]="currentPickerLocation"
+  (valueChange)="locationPickerValueChanged(currentPickerLocation)">
 </aui-location-picker>
 
 <div *ngIf="inputClearVisible" (click)="clear()" class="remove-input">
