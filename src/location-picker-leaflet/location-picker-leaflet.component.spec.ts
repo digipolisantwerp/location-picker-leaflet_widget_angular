@@ -96,6 +96,34 @@ describe('LocationPickerLeafletComponent', () => {
     expect(serviceSpy).toHaveBeenCalled();
   });
 
+  it('should call locationservice when external location id is given', () => {
+    serviceSpy = spyOn(service, 'getLocation').and.callThrough();
+    component.location = emptyDummyLocation;
+    component.ngOnChanges({
+      location: new SimpleChange(
+        null,
+        component.location,
+        true
+      )
+    });
+    fixture.detectChanges();
+    expect(serviceSpy).toHaveBeenCalled();
+  });
+
+  it('should not call locationservice when external location id and coordinates are given', () => {
+    serviceSpy = spyOn(service, 'getLocation').and.callThrough();
+    component.location = dummyLocation;
+    component.ngOnChanges({
+      location: new SimpleChange(
+        null,
+        component.location,
+        true
+      )
+    });
+    fixture.detectChanges();
+    expect(serviceSpy).not.toHaveBeenCalled();
+  });
+
   it('should update defaultCoordinates when external coordinates are given', () => {
     component.location = dummyLocation;
     component.ngOnChanges({
@@ -120,5 +148,33 @@ describe('LocationPickerLeafletComponent', () => {
     });
     fixture.detectChanges();
     expect(component.defaultCoordinates).toBe(originalValue);
+  });
+
+  it('should update and show currentPickerLocation', () => {
+    component.location = dummyLocation;
+    component.showAddress = true;
+    component.ngOnChanges({
+      location: new SimpleChange(
+        null,
+        component.location,
+        true
+      )
+    });
+    fixture.detectChanges();
+    expect(component.currentPickerLocation).toBe(dummyLocation);
+  });
+
+  it('should not update and show currentPickerLocation', () => {
+    component.location = dummyLocation;
+    component.showAddress = false;
+    component.ngOnChanges({
+      location: new SimpleChange(
+        null,
+        component.location,
+        true
+      )
+    });
+    fixture.detectChanges();
+    expect(component.currentPickerLocation).not.toBe(dummyLocation);
   });
 });
