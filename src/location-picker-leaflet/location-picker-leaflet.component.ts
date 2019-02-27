@@ -201,7 +201,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
       }
       const arr = location.polygons[0].map(coordinate => [
         coordinate.lat,
-        coordinate.lng
+        coordinate.lng,
       ]);
       const centerCoordinates = L.polygon(arr, {})
         .getBounds()
@@ -218,23 +218,6 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   // HELPERS
   public clear = () => {
     this.currentPickerLocation = { id: '', name: '', locationType: null };
-  }
-
-  // If there are no coordinates, use centroid logic to create center coordinates
-  private centroidBasedCoordinates = (location: LocationItem) => {
-    if (!location.polygons || !location.polygons.length) {
-      return;
-    }
-    const arr = location.polygons[0].map(coordinate => [
-      coordinate.lat,
-      coordinate.lng
-    ]);
-    const centerCoordinates = L.polygon(arr, {})
-      .getBounds()
-      .getCenter();
-
-    this.defaultCoordinates.lat = centerCoordinates.lat;
-    this.defaultCoordinates.lng = centerCoordinates.lng;
   }
 
   private createUrl = (customUrl, defaultUrl) => {

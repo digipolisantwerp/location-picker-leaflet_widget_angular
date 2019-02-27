@@ -214,4 +214,12 @@ describe('LocationPickerLeafletComponent', () => {
       expect(component.currentPickerLocation).toEqual(dummyLocation);
     });
   }));
+
+  it('should clear the picker location when the clear button is pressed', () => {
+    component.currentPickerLocation = dummyLocation;
+    component.clear();
+    expect(component.currentPickerLocation.id).toBe('');
+    expect(component.currentPickerLocation.name).toBe('');
+    expect(component.currentPickerLocation.locationType).toBeNull();
+  });
 });
