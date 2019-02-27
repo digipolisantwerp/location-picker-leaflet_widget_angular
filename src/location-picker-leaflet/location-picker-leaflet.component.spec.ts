@@ -38,7 +38,7 @@ describe('LocationPickerLeafletComponent', () => {
     ]
   };
 
-  class MockService {
+  class MockLocationPickerLeafletService {
     public getLocation(url: string, query: any): Promise<any> {
       return of(dummyLocation).toPromise();
     }
@@ -60,7 +60,7 @@ describe('LocationPickerLeafletComponent', () => {
         LocationPickerLeafletService,
         {
           provide: LocationPickerLeafletService,
-          useClass: MockService,
+          useClass: MockLocationPickerLeafletService,
         },
       ],
       imports: [LeafletModule, LocationPickerModule]
