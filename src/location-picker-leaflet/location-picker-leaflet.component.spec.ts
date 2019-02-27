@@ -5,6 +5,9 @@ import { LeafletModule } from '@acpaas-ui/ngx-components/map';
 import { LocationPickerModule } from '@acpaas-ui-widgets/ngx-location-picker';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 import { LocationItem, LocationType } from './LocationItem.domain';
+import {
+  of,
+} from 'rxjs';
 
 describe('LocationPickerLeafletComponent', () => {
   const dummyCoordinates = { lat: 51.21025180508141, lng: 4.474143732169805 };
@@ -25,6 +28,16 @@ describe('LocationPickerLeafletComponent', () => {
     locationType: LocationType.Street,
     street: 'Burgemeester De Boeylaan'
   };
+
+  class MockService {
+    public getLocation(url: string, query: any): Promise<any> {
+      return of(dummyLocation).toPromise();
+    }
+    public validCoordinates(coordinates): boolean {
+      return true;
+    }
+  }
+
   let component: LocationPickerLeafletComponent;
   let element: any;
   let fixture: ComponentFixture<LocationPickerLeafletComponent>;
@@ -34,7 +47,13 @@ describe('LocationPickerLeafletComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LocationPickerLeafletComponent],
-      providers: [LocationPickerLeafletService],
+      providers: [
+        LocationPickerLeafletService,
+        {
+          provide: LocationPickerLeafletService,
+          useClass: MockService,
+        },
+      ],
       imports: [LeafletModule, LocationPickerModule]
     }).compileComponents();
   }));
@@ -98,6 +117,7 @@ describe('LocationPickerLeafletComponent', () => {
 
   it('should call locationservice when external location id is given', () => {
     serviceSpy = spyOn(service, 'getLocation').and.callThrough();
+    spyOn(service, 'validCoordinates').and.returnValue(false);
     component.location = emptyDummyLocation;
     component.ngOnChanges({
       location: new SimpleChange(
@@ -177,4 +197,21 @@ describe('LocationPickerLeafletComponent', () => {
     fixture.detectChanges();
     expect(component.currentPickerLocation).not.toBe(dummyLocation);
   });
+
+  it('should update defaultCoordinates', async(() => {
+    component.getLocation(component.locationUrl, component.defaultLocationUrl, dummyLocation.id);
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      expect(component.defaultCoordinates).toBe(dummyCoordinates);
+    });
+  }));
+
+  it('should update locationPicker', async(() => {
+    component.showAddress = true;
+    component.getLocation(component.locationUrl, component.defaultLocationUrl, dummyLocation.id);
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      expect(component.currentPickerLocation).toEqual(dummyLocation);
+    });
+  }));
 });
