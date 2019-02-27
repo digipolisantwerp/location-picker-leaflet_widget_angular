@@ -81,7 +81,8 @@ Every value in the backing list must have a unique id.
 - **coordinatesUrl**: (string) when `/api/coordinates` is not the required endpoint to get data based on coordinates
 - **locationUrl**: (string) when `/api/locations` is not the required endpoint to get data based on location
 - **coordinates**: (Object({ lat: number, lng: number })) will center the map on the given latitude and longitude coordinates at the initialization of the widget
-- **showAddress**: (boolean) whether or not to show the address in the input field at the initialization of the widget
+- **location**: (Object(LocationItem)) will set the default location on initialization. Needs `coordinates` or an `id` to center the map to this location.
+- **showAddress**: (boolean(false)) whether or not to show the address in the input field at the initialization of the widget
 
 ### Events
 
@@ -95,7 +96,7 @@ The back-end service implements the following protocol:
 - GET /path/to/endpoint?search=...&types=...
 - **search**: the text that the user typed on which to match
 - **types**: a comma-separated list of types to return, default value = 'street,number,poi'
-- **result**: JSON-encoded array of [LocationPickerValue](src/location-picker/location-picker.types.ts) objects
+- **result**: JSON-encoded array of [LocationPickerValue](https://github.com/digipolisantwerp/location-picker_widget_angular/blob/master/src/location-picker/location-picker.types.ts) objects
 
 ## Run the demo app
 
