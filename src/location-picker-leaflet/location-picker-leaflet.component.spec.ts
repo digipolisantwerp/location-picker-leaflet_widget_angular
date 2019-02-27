@@ -104,14 +104,14 @@ describe('LocationPickerLeafletComponent', () => {
     expect(component.locationChange.emit).toHaveBeenCalled();
   });
 
-  it('should emit when locationpicker value changed', () => {
+  it('should emit when location picker value changed', () => {
     component.ngOnInit();
     spyOn(component.locationChange, 'emit');
     component.locationPickerValueChanged(dummyLocation);
     expect(component.locationChange.emit).toHaveBeenCalled();
   });
 
-  it('should not emit when locationpicker value changed with no coordinates', () => {
+  it('should not emit when location picker value changed with no coordinates', () => {
     component.ngOnInit();
     spyOn(component.locationChange, 'emit');
     component.locationPickerValueChanged(emptyDummyLocation);
@@ -180,7 +180,7 @@ describe('LocationPickerLeafletComponent', () => {
     expect(component.defaultCoordinates).toBe(originalValue);
   });
 
-  it('should update and show currentPickerLocation', () => {
+  it('should update and show currentPickerLocation when showAddress is true', () => {
     component.location = dummyLocation;
     component.showAddress = true;
     component.ngOnChanges({
@@ -194,7 +194,7 @@ describe('LocationPickerLeafletComponent', () => {
     expect(component.currentPickerLocation).toBe(dummyLocation);
   });
 
-  it('should not update and show currentPickerLocation', () => {
+  it('should not update and show currentPickerLocation when showAddress is false', () => {
     component.location = dummyLocation;
     component.showAddress = false;
     component.ngOnChanges({
@@ -208,7 +208,7 @@ describe('LocationPickerLeafletComponent', () => {
     expect(component.currentPickerLocation).not.toBe(dummyLocation);
   });
 
-  it('should update defaultCoordinates', async(() => {
+  it('should update defaultCoordinates when external location id is given', async(() => {
     component.getLocation(component.locationUrl, component.defaultLocationUrl, dummyLocation.id);
     fixture.detectChanges();
     fixture.whenStable().then(() => {
@@ -216,7 +216,7 @@ describe('LocationPickerLeafletComponent', () => {
     });
   }));
 
-  it('should update locationPicker', async(() => {
+  it('should update location picker value when external location id is given and showAddress is true', async(() => {
     component.showAddress = true;
     component.getLocation(component.locationUrl, component.defaultLocationUrl, dummyLocation.id);
     fixture.detectChanges();
