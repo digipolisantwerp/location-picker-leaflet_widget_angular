@@ -4,9 +4,6 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-### Changed
-- [BREAKING] Simplified attributes to give external coordinates and show the default address or not
-
 <!--
 "### Added" for new features.
 "### Changed" for changes in existing functionality.
@@ -15,6 +12,12 @@ All notable changes to this project will be documented in this file.
 "### Fixed" for any bug fixes.
 "### Security" in case of vulnerabilities.
 -->
+## [3.0.0] - 2019-02-27
+
+### Changed
+
+- [BREAKING] Simplified attributes to set external location and show the default address or not
+
 ## [2.1.1] - 2019-01-11
 
 ### Changed
@@ -80,8 +83,9 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v2.1.1....HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v3.0.0....HEAD
 
+[3.0.0]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v2.1.1...v3.0.0
 [2.1.1]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v1.2.3...v2.0.0
