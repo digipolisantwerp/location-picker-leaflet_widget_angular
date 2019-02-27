@@ -28,6 +28,15 @@ describe('LocationPickerLeafletComponent', () => {
     locationType: LocationType.Street,
     street: 'Burgemeester De Boeylaan'
   };
+  const dummyPolygonLocation: LocationItem = {
+    id: 'P_DA/Locaties/MapServer/18/1168460',
+    name: 'Burgemeester De Boeylaan (Deurne)',
+    locationType: LocationType.Street,
+    polygons: [
+      [dummyCoordinates, dummyCoordinates, dummyCoordinates],
+      [dummyCoordinates, dummyCoordinates, dummyCoordinates, dummyCoordinates],
+    ]
+  };
 
   class MockService {
     public getLocation(url: string, query: any): Promise<any> {
@@ -77,6 +86,7 @@ describe('LocationPickerLeafletComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should be truthy when ngInit is called.', () => {
+    component.locationUrl = 'https://some/url';
     component.ngOnInit();
     expect(component).toBeTruthy();
   });
@@ -222,4 +232,12 @@ describe('LocationPickerLeafletComponent', () => {
     expect(component.currentPickerLocation.name).toBe('');
     expect(component.currentPickerLocation.locationType).toBeNull();
   });
+
+  it('should center map when location picker value changed and polygons are defined', async(() => {
+    component.ngOnInit();
+    fixture.whenStable().then(() => {
+      component.locationPickerValueChanged(dummyPolygonLocation);
+      expect(dummyPolygonLocation.coordinates.latLng).toBeDefined();
+    });
+  }));
 });
