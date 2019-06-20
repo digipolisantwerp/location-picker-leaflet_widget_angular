@@ -125,35 +125,6 @@ describe('LocationPickerLeafletComponent', () => {
     expect(serviceSpy).toHaveBeenCalled();
   });
 
-  it('should call locationservice when external location id is given', () => {
-    serviceSpy = spyOn(service, 'getLocation').and.callThrough();
-    spyOn(service, 'validCoordinates').and.returnValue(false);
-    component.location = emptyDummyLocation;
-    component.ngOnChanges({
-      location: new SimpleChange(
-        null,
-        component.location,
-        true
-      )
-    });
-    fixture.detectChanges();
-    expect(serviceSpy).toHaveBeenCalled();
-  });
-
-  it('should not call locationservice when external location id and coordinates are given', () => {
-    serviceSpy = spyOn(service, 'getLocation').and.callThrough();
-    component.location = dummyLocation;
-    component.ngOnChanges({
-      location: new SimpleChange(
-        null,
-        component.location,
-        true
-      )
-    });
-    fixture.detectChanges();
-    expect(serviceSpy).not.toHaveBeenCalled();
-  });
-
   it('should update defaultCoordinates when external coordinates are given', () => {
     component.location = dummyLocation;
     component.ngOnChanges({
