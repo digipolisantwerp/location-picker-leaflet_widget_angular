@@ -191,7 +191,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     // Location picker value has changed, which means there is a result from the server
     if (!location || !location.coordinates || !location.coordinates.latLng) {
       // centroid logic
-      if (!location.polygons) {
+      if (!location.polygons || !location.polygons.length) {
         return;
       }
       const arr = location.polygons[0].map(coordinate => [
