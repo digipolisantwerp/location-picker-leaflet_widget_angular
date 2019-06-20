@@ -50,10 +50,10 @@ Add the leaflet CSS styles to the `angular.json` file.
 ### In your template:
 
 ```html
-<aui-location-picker-leaflet class="widget"
-    [coordinates]="newCoordinates"
+<aui-location-picker-leaflet
+    [url]="url"
+    [location]="location"
     [showAddress]="showAddress"
-    [url]="http://localhost:9999"
     (locationChange)="addressResolvedCallback($event)"
 ></aui-location-picker-leaflet>
 ```
@@ -65,7 +65,24 @@ In the component code:
 ```ts
 class YourComponent {
 
-    addressResolvedCallback = (location) => {
+    // BFF URL
+    public url = 'http://localhost:9999/api/vlaanderen';
+
+    // Center map on this location
+    public location = {
+        coordinates: {
+            latLng: {
+              lat: 51.19506875061893,
+              lng: 4.381795173474985,
+            },
+        },
+    };
+
+    // Show location address
+    public showAddress = true;
+
+    // Do this when the map view has changed
+    public addressResolvedCallback = (location) => {
         console.log(location);
     };
 
@@ -80,9 +97,9 @@ Every value in the backing list must have a unique id.
 - **url**: (string) required URL of the back-end service feeding this widget
 - **coordinatesUrl**: (string) when `/api/coordinates` is not the required endpoint to get data based on coordinates
 - **locationUrl**: (string) when `/api/locations` is not the required endpoint to get data based on location
-- **coordinates**: (Object({ lat: number, lng: number })) will center the map on the given latitude and longitude coordinates at the initialization of the widget
-- **location**: (Object(LocationItem)) will set the default location on initialization. Needs `coordinates` or an `id` to center the map to this location.
+- **location**: (Object(LocationItem)) will set the default location on initialization. Needs latitude and longitude `coordinates` to center the map to this location.
 - **showAddress**: (boolean(false)) whether or not to show the address in the input field at the initialization of the widget
+- **placeholder**: specify the text to show in the autocomplete field
 
 ### Events
 
