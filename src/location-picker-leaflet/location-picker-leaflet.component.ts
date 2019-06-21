@@ -119,9 +119,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
 
       // Adding the layer to the leaflet.
       this.leafletMap.addTileLayer(baseMapWorldGray);
-      // if (this.url.endsWith('/api')) {
-        this.leafletMap.addTileLayer(baseMapAntwerp);
-      // }
+      this.leafletMap.addTileLayer(baseMapAntwerp);
 
       // Declare a marker with standard icon, widget can be expanded with custom icon support.
       this.marker = new L.marker(this.centerCoordinates());
