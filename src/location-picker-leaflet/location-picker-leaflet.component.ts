@@ -29,6 +29,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   @Input() location: LocationItem;
   @Input() showAddress = false;
   @Input() url: string;
+  @Input() placeholder = '';
 
   // Override the default endpoints
   @Input() coordinatesUrl: string;
@@ -42,7 +43,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   > = new EventEmitter<[number, number]>();
 
   public defaultCoordinates = { lat: 51.215, lng: 4.425 }; // default center point
-  public defaultLocationUrl = '/api/locations';
+  public defaultLocationUrl = '';
   public leafletMap: LeafletMap;
   public leafletDefaultZoom = 16;
   public leafletMinZoom = 12;
@@ -52,7 +53,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   public currentPickerLocation: LocationItem;
 
   private newLocation: LocationItem;
-  private defaultCoordinatesUrl = '/api/coordinates';
+  private defaultCoordinatesUrl = '/coordinates';
   private getLocationWithId = false;
   private marker: L.marker;
 
@@ -73,9 +74,6 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
       // If there are coordinates, set them as the defaultCoordinates
       if (this.locationPickerLeafletService.validCoordinates(coordinatesValues)) {
         this.defaultCoordinates = this.newLocation.coordinates.latLng;
-      } else {
-        // Check if there's a location id present
-        this.getLocationWithId = this.newLocation.hasOwnProperty('id');
       }
 
       // Show location in locationPicker
@@ -94,12 +92,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   }
 
   public ngOnInit() {
-    if (this.getLocationWithId) {
-      this.getLocation(this.locationUrl, this.defaultLocationUrl, this.newLocation.id);
-      this.getLocationWithId = false;
-    } else {
-      this.initializeMap();
-    }
+    this.initializeMap();
 
     // Checks the required attributes
     if (!this.url) {
@@ -115,7 +108,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   public initializeMap = () => {
     this.leafletMap = new LeafletMap({
       zoom: this.leafletDefaultZoom, // default zoom level
-      center: this.defaultCoordinates
+      center: this.defaultCoordinates,
     });
 
     // MAP SCAFFOLDING
