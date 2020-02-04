@@ -1,5 +1,11 @@
 # Location Picker with Leaflet Smart Widget UI (Angular)
 
+## Deprecated
+
+**This widget has been deprecated and is replaced by [location-picker_widget_angular](https://github.com/digipolisantwerp/location-picker_widget_angular).**
+
+## Description
+
 This is the Angular 6+ UI for a Smart Widget implementing a picker field to choose a location (street, address or point of interest) in combination with Leaflet. It is matched by a [corresponding back-end service](https://github.com/digipolisantwerp/location-picker_service_nodejs) which is needed when running it in remote mode. A default implementation for selecting locations in Antwerp is provided.
 
 ![screenshot](example.png)
