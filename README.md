@@ -41,7 +41,7 @@ import { LocationPickerLeafletModule } from '@acpaas-ui-widgets/ngx-location-pic
 In the `index.html`, include the core branding stylesheet:
 
 ```html
-<link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/3.0.3/main.min.css">
+<link rel="stylesheet" href="https://cdn.antwerpen.be/core_branding_scss/4.1.1/main.min.css">
 ```
 
 Add the leaflet CSS styles to the `angular.json` file.
