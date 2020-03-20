@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { baseMapAntwerp, baseMapWorldGray, LeafletMap } from '@acpaas-ui/ngx-components/map';
+import { baseMapAntwerp, baseMapWorldGray, LeafletMap, MapService } from '@acpaas-ui/ngx-components/map';
 import * as L from 'leaflet';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -50,9 +50,12 @@ export class LocationPickerLeafletComponent implements OnInit {
         },
         onEditFeature: (feature) => {
         }
-    });
+    }, this.mapService);
 
-    constructor(private locationPickerLeafletService: LocationPickerLeafletService) {
+    constructor(
+      private locationPickerLeafletService: LocationPickerLeafletService,
+      private mapService: MapService,
+    ) {
     }
 
     ngOnInit() {
