@@ -6,12 +6,13 @@ import {
   Output,
   OnChanges,
   SimpleChanges,
-  SimpleChange
+  SimpleChange,
 } from '@angular/core';
 import {
   baseMapAntwerp,
   baseMapWorldGray,
-  LeafletMap
+  LeafletMap,
+  MapService,
 } from '@acpaas-ui/ngx-components/map';
 import * as L from 'leaflet';
 import { LocationPickerLeafletService } from './location-picker-leaflet.service';
@@ -58,7 +59,8 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
   private marker: L.marker;
 
   constructor(
-    private locationPickerLeafletService: LocationPickerLeafletService
+    private locationPickerLeafletService: LocationPickerLeafletService,
+    private mapService: MapService,
   ) { }
 
   public ngOnChanges(changes: SimpleChanges) {
@@ -109,7 +111,7 @@ export class LocationPickerLeafletComponent implements OnChanges, OnInit {
     this.leafletMap = new LeafletMap({
       zoom: this.leafletDefaultZoom, // default zoom level
       center: this.defaultCoordinates,
-    });
+    }, this.mapService);
 
     // MAP SCAFFOLDING
     // Layer can only be drawn on the leaflet after it has been initiated.
