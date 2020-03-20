@@ -35,8 +35,8 @@
     "ng-packagr"
   ],
   "peerDependencies": {
-    "@acpaas-ui-widgets/ngx-location-picker": "^2.0.0",
-    "@acpaas-ui/ngx-components": "^1.0.5",
+    "@acpaas-ui-widgets/ngx-location-picker": "^2.1.0",
+    "@acpaas-ui/ngx-components": "^3.0.0",
     "@angular/common": "^6.0.0",
     "@angular/core": "^6.0.0",
     "@angular/forms": "^6.0.0",
@@ -44,9 +44,9 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@a-ui/core": "~3.0.3",
-    "@acpaas-ui-widgets/ngx-location-picker": "^2.0.0",
-    "@acpaas-ui/ngx-components": "^1.0.5",
+    "@a-ui/core": "^4.1.1",
+    "@acpaas-ui-widgets/ngx-location-picker": "^2.1.0",
+    "@acpaas-ui/ngx-components": "^3.0.0",
     "@angular-devkit/build-angular": "^0.12.1",
     "@angular/animations": "6.1.9",
     "@angular/cli": "^6.2.8",
