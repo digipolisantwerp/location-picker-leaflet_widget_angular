@@ -93,7 +93,7 @@ The back-end service implements the following protocol:
 - GET /path/to/endpoint?search=...&types=...
 - **search**: the text that the user typed on which to match
 - **types**: a comma-separated list of types to return, default value = "street,number,poi"
-- **result**: JSON-encoded array of [LocationPickerValue](src/location-picker/location-picker.types.ts) objects
+- **result**: JSON-encoded array of [LocationPickerV1Value](src/location-picker/location-picker.types.ts) objects
 
 ## Run the demo app
 

@@ -13,6 +13,13 @@ All notable changes to this project will be documented in this file.
 "### Security" in case of vulnerabilities.
 -->
 
+## [2.3.0] - 2020-03-25
+
+### Changed
+
+- [BREAKING] Changed the scope of the (deprecated) Location Picker (v1) dependency
+
+
 ## [2.2.1] - 2020-03-20
 
 ### Fixed
@@ -92,7 +99,8 @@ All notable changes to this project will be documented in this file.
 
 - Initial release.
 
-[Unreleased]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v2.2.1....HEAD
+[Unreleased]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v2.3.0....HEAD
+[2.3.0]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v2.2.1...v2.3.0
 [2.2.1]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/digipolisantwerp/location-picker-leaflet_widget_angular/compare/v2.1.0...v2.1.1
